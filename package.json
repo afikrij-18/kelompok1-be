@@ -1,0 +1,28 @@
+{
+  "name": "kelompok1-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afikrij-18/kelompok1-be.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/afikrij-18/kelompok1-be/issues"
+  },
+  "homepage": "https://github.com/afikrij-18/kelompok1-be#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "epxress": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "mysql2": "^3.24.5",
+    "sequelize": "^6.37.8"
+  }
+}
