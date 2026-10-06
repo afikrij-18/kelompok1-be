@@ -92,3 +92,51 @@ Content-Type: application/json
 ### 5. DELETE - Hapus Product
 DELETE {{baseUrl}}/products/1
 Authorization: Bearer {{login.response.body.data.token}}
+
+
+###
+
+POST http://localhost:5000/api/categories
+Content-Type: application/json
+
+{
+  "name" : "Service AC"
+}
+
+###
+POST http://localhost:5000/api/categories
+Content-Type: application/json
+
+{
+  "name": "AC Cassette",
+  "parent_id": 1
+}
+
+###
+GET http://localhost:5000/api/categories
+
+
+###
+POST http://localhost:5000/api/services
+Content-Type: application/json
+
+{
+  "name": "Cuci AC Cassette",
+  "description": "Pembersihan AC cassette",
+  "price": 200000,
+  "category_id": 3
+}
+
+###
+GET http://localhost:5000/api/services
+
+
+###
+POST http://localhost:5000/api/services
+
+{
+  "name": "Service AC",
+  "description": "Test",
+  "price": 100000,
+  "category_id": 999
+}
