@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:5000/api
+@token = TOKEN_ANDA
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+"email": "admin@gmail.com",
+"password": "admin123"
+}
+
+### Profil Saya
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Ubah Profil
+PUT {{baseUrl}}/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+"name": "Admin UMKM",
+"email": "admin.umkm@gmail.com"
+}
+
+### Ubah Password
+PUT {{baseUrl}}/auth/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+"oldPassword": "PASSWORD_LAMA",
+"newPassword": "PASSWORD_BARU"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{token}}
