@@ -6,8 +6,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-"email": "admin@gmail.com",
-"password": "admin123"
+"email": "EMAIL_ANDA",
+"password": "PASSWORD_ANDA"
 }
 
 ### Profil Saya
