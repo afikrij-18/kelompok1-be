@@ -1,62 +1,76 @@
 @baseUrl = http://localhost:5000/api
-@token = INPUT_YOUR_TOKEN_HERE
-
-### Login
+### ========================================
+### AUTH - LOGIN
+### ========================================
+# @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-"email": "EMAIL_ANDA",
-"password": "PASSWORD_ANDA"
+  "email": "admin@gmail.com",
+  "password": "admin123"
 }
+
+
+### ========================================
+### AUTH - PROFILE
+### ========================================
 
 ### Profil Saya
 GET {{baseUrl}}/auth/me
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
+
 
 ### Ubah Profil
 PUT {{baseUrl}}/auth/profile
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 Content-Type: application/json
 
 {
-"name": "Admin UMKM",
-"email": "admin.umkm@gmail.com"
+  "name": "Admin UMKM",
+  "email": "admin.umkm@gmail.com",
+  "phone": "081234567890"
 }
+
 
 ### Ubah Password
 PUT {{baseUrl}}/auth/password
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 Content-Type: application/json
 
 {
-"oldPassword": "PASSWORD_LAMA",
-"newPassword": "PASSWORD_BARU"
+  "oldPassword": "PASSWORD_LAMA",
+  "newPassword": "PASSWORD_BARU"
 }
+
 
 ### Logout
 POST {{baseUrl}}/auth/logout
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 
+
+### ========================================
+### PRODUCT
+### ========================================
 
 ### 1. GET - Semua Product
 GET {{baseUrl}}/products
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 
 
 ### 2. GET - Product berdasarkan ID
 GET {{baseUrl}}/products/1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 
 
 ### 3. POST - Tambah Product
 POST {{baseUrl}}/products
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 Content-Type: application/json
 
 {
-  "name": "Remote Ac Daikin",
-  "description": "Remote Ac Daikin 1 PK",
+  "name": "Remote AC Daikin",
+  "description": "Remote AC Daikin 1 PK",
   "price": 150000,
   "stock": 10
 }
@@ -64,11 +78,11 @@ Content-Type: application/json
 
 ### 4. PUT - Update Product
 PUT {{baseUrl}}/products/1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
 Content-Type: application/json
 
 {
-  "name": "Remote Ac Panasonic",
+  "name": "Remote AC Panasonic",
   "description": "Remote AC Panasonic",
   "price": 120000,
   "stock": 8
@@ -77,4 +91,4 @@ Content-Type: application/json
 
 ### 5. DELETE - Hapus Product
 DELETE {{baseUrl}}/products/1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.data.token}}
