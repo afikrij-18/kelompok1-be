@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:5000/api
-@token = TOKEN_ANDA
+@token = INPUT_YOUR_TOKEN_HERE
 
 ### Login
 POST {{baseUrl}}/auth/login
@@ -36,4 +36,45 @@ Content-Type: application/json
 
 ### Logout
 POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{token}}
+
+
+### 1. GET - Semua Product
+GET {{baseUrl}}/products
+Authorization: Bearer {{token}}
+
+
+### 2. GET - Product berdasarkan ID
+GET {{baseUrl}}/products/1
+Authorization: Bearer {{token}}
+
+
+### 3. POST - Tambah Product
+POST {{baseUrl}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Remote Ac Daikin",
+  "description": "Remote Ac Daikin 1 PK",
+  "price": 150000,
+  "stock": 10
+}
+
+
+### 4. PUT - Update Product
+PUT {{baseUrl}}/products/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Remote Ac Panasonic",
+  "description": "Remote AC Panasonic",
+  "price": 120000,
+  "stock": 8
+}
+
+
+### 5. DELETE - Hapus Product
+DELETE {{baseUrl}}/products/1
 Authorization: Bearer {{token}}
