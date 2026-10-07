@@ -92,3 +92,103 @@ Content-Type: application/json
 ### 5. DELETE - Hapus Product
 DELETE {{baseUrl}}/products/1
 Authorization: Bearer {{login.response.body.data.token}}
+
+
+###
+
+
+@baseUrl = http://localhost:5000/api
+
+### ========================================
+### 1. KATEGORI (CATEGORIES)
+### ========================================
+
+### GET - Ambil Semua Kategori (Hierarki Tree + Services)
+GET {{baseUrl}}/categories
+
+### GET - Ambil Kategori Berdasarkan ID (Contoh ID: 1)
+GET {{baseUrl}}/categories/4
+
+### POST - Tambah Kategori Utama (Root / Level 0) - Contoh: "Service AC"
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+    "name": "Cek AC"
+}
+
+### POST - Tambah Subkategori Level 1 - Contoh: "Service AC Split" (parent_id sesuaikan dengan ID "Service AC")
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+    "name": "Service AC Split",
+    "parent_id": 1
+}
+
+### POST - Tambah Subkategori Level 1 Lainnya - Contoh: "AC Cassette"
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+    "name": "AC Cassette",
+    "parent_id": 4
+}
+
+### PATCH / PUT - Update Kategori (Contoh ID: 2)
+PATCH {{baseUrl}}/categories/1
+Content-Type: application/json
+
+{
+    "name": "Service AC(Updated)"
+}
+
+### DELETE - Hapus Kategori (Contoh ID: 3)
+DELETE {{baseUrl}}/categories/4
+
+
+### ========================================
+### 2. LAYANAN (SERVICES & HARGA)
+### ========================================
+
+### GET - Ambil Semua Service beserta Kategori-nya
+GET {{baseUrl}}/services
+
+### GET - Ambil Service Berdasarkan ID (Contoh ID: 1)
+GET {{baseUrl}}/services/3
+
+### POST - Tambah Service Baru (Contoh: Service Biasa dengan Harga 90.000)
+POST {{baseUrl}}/services
+Content-Type: application/json
+
+{
+    "name": "Pasang AC Split (Baru/Second)",
+    "description": "Pekerjaan hanya memasang AC Split baik baru ataupun second. ( Biaya tidak termasuk sparepart tambahan seperti pipa AC)",
+    "price": 250000,
+    "category_id": 3
+}
+
+### POST - Tambah Service Lainnya (Contoh: Service Extra dengan Harga 180.000)
+POST {{baseUrl}}/services
+Content-Type: application/json
+
+{
+    "name": "Service AC Extraaaaa",
+    "description": "Pembersihan menyeluruh dengan cuci steam",
+    "price": 190000,
+    "category_id": 1
+}
+
+### PUT - Update Service (Contoh ID: 1)
+PUT {{baseUrl}}/services/1
+Content-Type: application/json
+
+{
+    "name": "Service AC Biasa (updated)",
+    "description": "Pembersihan standar diperbarui (updated)",
+    "price": 96000,
+    "category_id": 1
+}
+
+### DELETE - Hapus Service (Contoh ID: 1)
+DELETE {{baseUrl}}/services/7
