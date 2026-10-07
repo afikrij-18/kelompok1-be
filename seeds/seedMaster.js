@@ -1,4 +1,4 @@
-import { Category, db, Service } from "../models";
+import { Category, db, Service } from "../models/index";
 
 const runMasterSeeder = async () => {
   try {
