@@ -9,6 +9,7 @@ export const getServices = async (req, res) => {
                 {
                     model: Category,
                     as: "category",
+                    attributes: ["id", "name", "parent_id"],
                 },
             ],
         });
@@ -35,6 +36,7 @@ export const getServiceById = async (req, res) => {
                 {
                     model: Category,
                     as: "category",
+                    attributes: ["id", "name", "parent_id"],
                 },
             ],
         });
@@ -60,7 +62,6 @@ export const getServiceById = async (req, res) => {
 // CREATE service
 export const createService = async (req, res) => {
     try {
-        console.log(req.body);
         const {
             name,
             description,
@@ -75,7 +76,14 @@ export const createService = async (req, res) => {
             });
         }
 
-        // Cek apakah category ada
+        // Pastikan harga bernilai angka yang valid
+        if (isNaN(price) || Number(price) < 0) {
+            return res.status(400).json({
+                message: "Harga service harus berupa angka yang valid",
+            });
+        }
+
+        // Cek apakah kategori ada di database
         const category = await Category.findByPk(category_id);
 
         if (!category) {
@@ -86,8 +94,8 @@ export const createService = async (req, res) => {
 
         const service = await Service.create({
             name,
-            description,
-            price,
+            description: description || null,
+            price: Number(price),
             category_id,
         });
 
@@ -107,7 +115,6 @@ export const createService = async (req, res) => {
 export const updateService = async (req, res) => {
     try {
         const { id } = req.params;
-
         const {
             name,
             description,
@@ -124,13 +131,20 @@ export const updateService = async (req, res) => {
         }
 
         // Validasi field wajib
-        if (!name || price === undefined || !category_id) {
+        if (!name || price === undefined || category_id === undefined) {
             return res.status(400).json({
                 message: "Name, price, dan category_id wajib diisi",
             });
         }
 
-        // Cek kategori
+        // Pastikan harga bernilai angka yang valid
+        if (isNaN(price) || Number(price) < 0) {
+            return res.status(400).json({
+                message: "Harga service harus berupa angka yang valid",
+            });
+        }
+
+        // Cek kategori baru
         const category = await Category.findByPk(category_id);
 
         if (!category) {
@@ -141,8 +155,8 @@ export const updateService = async (req, res) => {
 
         await service.update({
             name,
-            description,
-            price,
+            description: description || null,
+            price: Number(price),
             category_id,
         });
 

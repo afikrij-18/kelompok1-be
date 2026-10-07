@@ -1,5 +1,11 @@
 import express from "express";
-import { getServices, createService, updateService, deleteService, getServiceById } from "../controllers/ServiceControllerjs";
+import { 
+    getServices, 
+    getServiceById, 
+    createService, 
+    updateService, 
+    deleteService 
+} from "../controllers/ServiceController.js";
 
 const router = express.Router();
 
@@ -9,4 +15,4 @@ router.post("/", createService);
 router.put("/:id", updateService);
 router.delete("/:id", deleteService);
 
-export default router; 
+export default router;

@@ -1,20 +1,37 @@
 import Category from "../models/Category.js";
+import Service from "../models/Service.js";
 
-// GET semua category
+// Helper untuk menyusun data kategori secara rekursif (berjenjang tree)
+const buildCategoryTree = (categories, services, parentId = null) => {
+    return categories
+        .filter(cat => cat.parent_id === parentId)
+        .map(cat => {
+            // Ambil service yang terikat pada kategori ini
+            const catServices = services.filter(s => s.category_id === cat.id);
+            
+            return {
+                id: cat.id,
+                name: cat.name,
+                parent_id: cat.parent_id,
+                createdAt: cat.createdAt,
+                updatedAt: cat.updatedAt,
+                children: catServices,
+                // children: buildCategoryTree(categories, services, cat.id)
+            };
+        });
+};
+
+// GET semua category (dalam bentuk hierarki tree lengkap dengan services)
 export const getCategories = async (req, res) => {
     try {
-        const categories = await Category.findAll({
-            include: [
-                {
-                    model: Category,
-                    as: "children",
-                },
-            ],
-        });
+        const categories = await Category.findAll();
+        const services = await Service.findAll();
+
+        const categoryTree = buildCategoryTree(categories, services, null);
 
         res.status(200).json({
-            message: "Data kategori berhasil diambil",
-            data: categories,
+            message: "Data kategori berjenjang berhasil diambil",
+            data: categoryTree,
         });
     } catch (error) {
         res.status(500).json({
@@ -32,8 +49,18 @@ export const getCategoryById = async (req, res) => {
         const category = await Category.findByPk(id, {
             include: [
                 {
+                    model: Service,
+                    as: "services",
+                },
+                {
                     model: Category,
                     as: "children",
+                    include: [
+                        {
+                            model: Service,
+                            as: "services",
+                        }
+                    ]
                 },
             ],
         });
@@ -115,20 +142,20 @@ export const updateCategory = async (req, res) => {
             });
         }
 
-        // Jika parent_id diberikan, pastikan parent-nya ada
+        // Jika parent_id diberikan, lakukan validasi
         if (parent_id) {
+            // Kategori tidak boleh menjadi parent dari dirinya sendiri
+            if (Number(parent_id) === Number(id)) {
+                return res.status(400).json({
+                    message: "Kategori tidak boleh menjadi parent dirinya sendiri",
+                });
+            }
+
             const parentCategory = await Category.findByPk(parent_id);
 
             if (!parentCategory) {
                 return res.status(404).json({
                     message: "Parent kategori tidak ditemukan",
-                });
-            }
-
-            // Kategori tidak boleh menjadi parent dari dirinya sendiri
-            if (Number(parent_id) === Number(id)) {
-                return res.status(400).json({
-                    message: "Kategori tidak boleh menjadi parent dirinya sendiri",
                 });
             }
         }
@@ -163,16 +190,25 @@ export const deleteCategory = async (req, res) => {
             });
         }
 
-        // Cek apakah kategori memiliki child
-        const children = await Category.count({
-            where: {
-                parent_id: id,
-            },
+        // Cek apakah kategori memiliki subkategori (children)
+        const childrenCount = await Category.count({
+            where: { parent_id: id },
         });
 
-        if (children > 0) {
+        if (childrenCount > 0) {
             return res.status(400).json({
                 message: "Kategori tidak dapat dihapus karena masih memiliki subkategori",
+            });
+        }
+
+        // Cek apakah kategori memiliki service terkait
+        const serviceCount = await Service.count({
+            where: { category_id: id },
+        });
+
+        if (serviceCount > 0) {
+            return res.status(400).json({
+                message: "Kategori tidak dapat dihapus karena masih memiliki layanan (service) di dalamnya",
             });
         }
 
