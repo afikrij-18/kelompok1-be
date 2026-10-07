@@ -27,15 +27,15 @@ const Category = db.define(
 );
 
 // Parent → Children
-Category.hasMany(Category, {
-    as: "children",
-    foreignKey: "parent_id",
-});
+// Category.hasMany(Category, {
+//     as: "children",
+//     foreignKey: "parent_id",
+// });
 
-// Child → Parent
-Category.belongsTo(Category, {
-    as: "parent",
-    foreignKey: "parent_id",
-});
+// // Child → Parent
+// Category.belongsTo(Category, {
+//     as: "parent",
+//     foreignKey: "parent_id",
+// });
 
 export default Category;

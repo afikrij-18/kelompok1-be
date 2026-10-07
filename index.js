@@ -5,13 +5,12 @@ import db from "./config/database.js";
 // Import models (pastikan model mendefinisikan relasinya masing-masing)
 import "./models/User.js";
 import "./models/Product.js";
-import Category from "./models/Category.js";
-import Service from "./models/Service.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 const app = express();
 
@@ -23,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api", bookingRoutes);
 
 app.get("/", (req, res) => {
   res.json({

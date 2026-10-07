@@ -37,14 +37,14 @@ const Service = db.define(
     }
 );
 
-Service.belongsTo(Category, {
-    foreignKey: "category_id",
-    as: "category",
-});
+// Service.belongsTo(Category, {
+//     foreignKey: "category_id",
+//     as: "category",
+// });
 
-Category.hasMany(Service, {
-    foreignKey: "category_id",
-    as: "services",
-});
+// Category.hasMany(Service, {
+//     foreignKey: "category_id",
+//     as: "services",
+// });
 
 export default Service;
