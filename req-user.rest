@@ -1,0 +1,107 @@
+@baseUrl = http://localhost:5000/api
+
+###========================================
+###AUTH - LOGIN
+###========================================
+# @name login
+
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+"email": "admin.umkm@gmail.com",
+"password": "12345678"
+}
+
+###========================================
+###USER
+###========================================
+###1. GET - Semua User
+
+GET {{baseUrl}}/users
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###2. GET - User berdasarkan ID
+###========================================
+
+GET {{baseUrl}}/users/1
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###3. POST - Tambah User
+###========================================
+
+POST {{baseUrl}}/users
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+"name": "Teknisi SejukPro",
+"email": "teknisi@sejukpro.com",
+"password": "password123",
+"phone": "081234567890",
+"status": "active",
+"role": "technician"
+}
+
+###========================================
+###4. PUT - Update User
+###========================================
+
+PUT {{baseUrl}}/users/2
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+"name": "Teknisi SejukPro Updated",
+"phone": "081298765432",
+"status": "active",
+"role": "technician"
+}
+
+###========================================
+###5. PUT - Update User dengan Password Seharusnya ditolak
+###========================================
+
+PUT {{baseUrl}}/users/2
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+"name": "Teknisi SejukPro",
+"password": "passwordBaru123"
+}
+
+###========================================
+###6. PUT - Ubah Password User Admin / Owner
+###========================================
+
+PUT {{baseUrl}}/users/2/password
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+"newPassword": "passwordBaru123"
+}
+
+###========================================
+###7. DELETE - Hapus User
+###========================================
+
+DELETE {{baseUrl}}/users/2
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###8. GET - User yang sudah dihapus Seharusnya 404
+###========================================
+
+GET {{baseUrl}}/users/2
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###AUTH - LOGOUT
+###========================================
+
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{login.response.body.data.token}}

@@ -7,6 +7,7 @@ import "./models/Product.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/UserRoutes.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.json({
@@ -31,6 +33,7 @@ const startServer = async () => {
     console.log("Database berhasil terhubung");
 
     await db.sync();
+    // await db.sync({ alter: true });
 
     console.log("Table berhasil dibuat/disinkronisasi");
 

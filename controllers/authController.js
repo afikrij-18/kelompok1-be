@@ -240,10 +240,7 @@ const updatePassword = async (req, res) => {
     }
 
     // Cek password lama
-    const passwordMatch = await bcrypt.compare(
-      oldPassword,
-      user.password,
-    );
+    const passwordMatch = await bcrypt.compare(oldPassword, user.password);
 
     if (!passwordMatch) {
       return res.status(401).json({
@@ -252,7 +249,7 @@ const updatePassword = async (req, res) => {
     }
 
     // Hash password baru
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
 
     user.password = hashedPassword;
 
@@ -289,10 +286,4 @@ const logout = async (req, res) => {
   }
 };
 
-export {
-  login,
-  getProfile,
-  updateProfile,
-  updatePassword,
-  logout,
-};
+export { login, getProfile, updateProfile, updatePassword, logout };
