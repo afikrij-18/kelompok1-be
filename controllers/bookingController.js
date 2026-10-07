@@ -90,7 +90,6 @@ export const getBookingById = async (req, res) => {
   }
 };
 
-// POST - Buat Booking Baru (Transaksi Multi-Tabel)
 // POST - Buat Booking Baru (Transaksi Multi-Tabel dengan Total Harga Otomatis)
 export const createBooking = async (req, res) => {
   const t = await db.transaction(); // Gunakan transaksi agar aman
@@ -244,7 +243,7 @@ export const deleteBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking tidak ditemukan" });
     }
 
-    // Hapus unit terkait terlebih dahulu (atau biarkan jika cascade sudah aktif di DB)
+    // Hapus unit terkait terlebih dahulu
     await BookingUnit.destroy({ where: { booking_id: id }, transaction: t });
 
     // Hapus master booking
@@ -259,6 +258,143 @@ export const deleteBooking = async (req, res) => {
     await t.rollback();
     res.status(500).json({
       message: "Gagal menghapus booking",
+      error: error.message,
+    });
+  }
+};
+
+// PUT - Update / Edit Booking Berdasarkan ID
+export const updateBooking = async (req, res) => {
+  const t = await db.transaction(); // Gunakan transaksi agar aman
+
+  try {
+    const { id } = req.params;
+    // Menambahkan status ke dalam request body destructuring
+    const { customer, booking_date, booking_time, status, notes, units } = req.body;
+
+    // 1. Cek apakah booking yang akan di-edit ada
+    const existingBooking = await BookingService.findByPk(id, { transaction: t });
+    if (!existingBooking) {
+      await t.rollback();
+      return res.status(404).json({ message: "Data booking tidak ditemukan" });
+    }
+
+    // 2. Validasi input dasar
+    if (!customer || !customer.name || !customer.phone || !customer.address) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ message: "Data customer (name, phone, address) wajib diisi" });
+    }
+
+    if (!booking_date || !booking_time) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ message: "Tanggal dan waktu booking wajib diisi" });
+    }
+
+    if (!units || !Array.isArray(units) || units.length === 0) {
+      await t.rollback();
+      return res
+        .status(400)
+        .json({ message: "Minimal harus ada 1 unit AC yang diservis" });
+    }
+
+    // 3. Update data customer berdasarkan customer_id dari booking
+    const customerRecord = await Customer.findByPk(existingBooking.customer_id, { transaction: t });
+    if (customerRecord) {
+      await customerRecord.update(
+        {
+          name: customer.name,
+          phone: customer.phone,
+          address: customer.address,
+        },
+        { transaction: t }
+      );
+    }
+
+    // 4. Validasi Service, Ambil Harga, & Hitung Ulang Total Harga Otomatis
+    let calculatedTotalPrice = 0;
+    const validatedUnits = [];
+
+    for (const unit of units) {
+      const serviceCheck = await Service.findByPk(unit.service_id, {
+        transaction: t,
+      });
+      if (!serviceCheck) {
+        await t.rollback();
+        return res.status(404).json({
+          message: `Service dengan ID ${unit.service_id} tidak ditemukan`,
+        });
+      }
+
+      const unitPrice = serviceCheck.price;
+      calculatedTotalPrice += unitPrice; // Akumulasi total harga baru
+
+      validatedUnits.push({
+        ...unit,
+        price: unitPrice,
+      });
+    }
+
+    // 5. Update Master Booking (Termasuk status dan total_price baru)
+    await existingBooking.update(
+      {
+        booking_date,
+        booking_time,
+        status: status || existingBooking.status, // Update status jika dikirim, jika tidak pertahankan yang lama
+        total_price: calculatedTotalPrice,
+        notes: notes || null,
+      },
+      { transaction: t }
+    );
+
+    // 6. Strategi Update Unit: Hapus unit lama yang terikat pada booking ini, lalu masukkan unit yang baru
+    await BookingUnit.destroy({
+      where: { booking_id: id },
+      transaction: t,
+    });
+
+    for (const unit of validatedUnits) {
+      await BookingUnit.create(
+        {
+          booking_id: existingBooking.id,
+          service_id: unit.service_id,
+          brand_ac: unit.brand_ac,
+          type_ac: unit.type_ac,
+          pk: unit.pk,
+          lokasi: unit.lokasi,
+          keluhan: unit.keluhan || null,
+          price: unit.price,
+        },
+        { transaction: t }
+      );
+    }
+
+    // Jika semua proses sukses, commit transaksi
+    await t.commit();
+
+    // 7. Ambil data booking yang sudah diperbarui beserta relasinya untuk dikembalikan ke response
+    const updatedBooking = await BookingService.findByPk(id, {
+      include: [
+        { model: Customer, as: "customer" },
+        {
+          model: BookingUnit,
+          as: "units",
+          include: [{ model: Service, as: "service" }],
+        },
+      ],
+    });
+
+    res.status(200).json({
+      message: "Data booking berhasil diperbarui",
+      data: updatedBooking,
+    });
+  } catch (error) {
+    await t.rollback();
+    res.status(500).json({
+      message: "Gagal memperbarui data booking",
       error: error.message,
     });
   }

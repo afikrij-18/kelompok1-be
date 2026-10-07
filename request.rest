@@ -192,7 +192,46 @@ Content-Type: application/json
 
 ### DELETE - Hapus Service (Contoh ID: 1)
 DELETE {{baseUrl}}/services/7
+###
+###get all booking
+###
+GET  {{baseUrl}}/bookings/
 
+###
+##get booking by id
+###
+GET  {{baseUrl}}/bookings/1
 
-### BOOKING
-GET {{baseUrl}}/bookings
+###
+###update booking
+###
+PUT  {{baseUrl}}/bookings/1
+Content-Type: application/json
+
+{
+    "customer": {
+        "name": "Ahmad Fikri Jundana",
+        "phone": "081234567890",
+        "address": "Jl. Khatib Sulaiman No. 15, Padang"
+    },
+    "booking_date": "2026-10-18",
+    "booking_time": "15:00:00",
+    "status": "confirmed",
+    "notes": "Jadwal dikonfirmasi, teknisi dipersiapkan.",
+    "units": [
+        {
+            "service_id": 2,
+            "brand_ac": "Daikin",
+            "type_ac": "Split",
+            "pk": "1",
+            "lokasi": "Kamar Utama",
+            "keluhan": "Cuci steam extra"
+        }
+    ]
+}
+
+###
+### Delete Booking
+###
+
+DELETE {{baseUrl}}/bookings/2
