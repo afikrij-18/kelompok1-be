@@ -192,3 +192,7 @@ Content-Type: application/json
 
 ### DELETE - Hapus Service (Contoh ID: 1)
 DELETE {{baseUrl}}/services/7
+
+
+### BOOKING
+GET {{baseUrl}}/bookings
