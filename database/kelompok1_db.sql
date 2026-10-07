@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 06, 2026 at 06:47 AM
+-- Generation Time: Oct 06, 2026 at 09:03 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.30
 
@@ -24,6 +24,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` int NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `price` int NOT NULL,
+  `stock` int NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -33,19 +49,28 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL
+  `updatedAt` datetime NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `role` enum('admin','technician','owner') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `createdAt`, `updatedAt`) VALUES
-(1, 'Admin UMKM', 'admin.umkm@gmail.com', '$2b$10$uwsDw710WEP.5jIQm4xFTOpkZ1YNNoBZAmR0FLMEMLNpanrX5GNTe', '2026-10-06 03:58:25', '2026-10-06 04:27:39');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `createdAt`, `updatedAt`, `phone`, `status`, `role`) VALUES
+(1, 'admin', 'admin@gmail.com', '$2a$15$pnG.mL88Eefy7n6FVqyeAeXsDr0FUdpm1rCxrHNiaJ6GtVcpVfq5.', '2026-10-06 04:44:46', '2026-10-06 04:44:46', NULL, 'active', 'admin');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -57,6 +82,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`

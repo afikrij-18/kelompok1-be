@@ -9,8 +9,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-"email": "admin.umkm@gmail.com",
-"password": "12345678"
+"email": "admin@gmail.com",
+"password": "admin123"
 }
 
 ###========================================
