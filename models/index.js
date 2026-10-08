@@ -2,6 +2,7 @@ import db from "../config/database.js";
 import Category from "./Category.js";
 import Service from "./Service.js";
 import Customer from "./Customer.js";
+import CustomerAddress from "./CustomerAddress.js"; // <-- Model baru
 import BookingService from "./BookingService.js";
 import BookingUnit from "./BookingUnit.js";
 
@@ -17,19 +18,31 @@ Category.hasMany(Service, { as: "services", foreignKey: "category_id" });
 Service.belongsTo(Category, { as: "category", foreignKey: "category_id" });
 
 // ==========================================
-// 2. RELASI CUSTOMER & BOOKING SERVICE
+// 2. RELASI CUSTOMER & CUSTOMER ADDRESS
+// ==========================================
+Customer.hasMany(CustomerAddress, { as: "addresses", foreignKey: "customer_id" });
+CustomerAddress.belongsTo(Customer, { as: "customer", foreignKey: "customer_id" });
+
+// ==========================================
+// 3. RELASI CUSTOMER & BOOKING SERVICE
 // ==========================================
 Customer.hasMany(BookingService, { as: "bookings", foreignKey: "customer_id" });
 BookingService.belongsTo(Customer, { as: "customer", foreignKey: "customer_id" });
 
 // ==========================================
-// 3. RELASI BOOKING SERVICE & BOOKING UNIT
+// 4. RELASI CUSTOMER ADDRESS & BOOKING SERVICE
+// ==========================================
+CustomerAddress.hasMany(BookingService, { as: "bookings", foreignKey: "address_id" });
+BookingService.belongsTo(CustomerAddress, { as: "address", foreignKey: "address_id" });
+
+// ==========================================
+// 5. RELASI BOOKING SERVICE & BOOKING UNIT
 // ==========================================
 BookingService.hasMany(BookingUnit, { as: "units", foreignKey: "booking_id" });
 BookingUnit.belongsTo(BookingService, { as: "booking", foreignKey: "booking_id" });
 
 // ==========================================
-// 4. RELASI SERVICE & BOOKING UNIT
+// 6. RELASI SERVICE & BOOKING UNIT
 // ==========================================
 Service.hasMany(BookingUnit, { as: "bookingUnits", foreignKey: "service_id" });
 BookingUnit.belongsTo(Service, { as: "service", foreignKey: "service_id" });
@@ -40,6 +53,7 @@ export {
     Category,
     Service,
     Customer,
+    CustomerAddress,
     BookingService,
     BookingUnit,
 };

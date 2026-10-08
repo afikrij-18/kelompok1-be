@@ -16,16 +16,13 @@ const Customer = db.define(
     phone: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    address: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+      unique: true, // Opsional: pastikan nomor telepon unik per customer
     },
   },
   {
     tableName: "customers",
     timestamps: true,
-  },
+  }
 );
 
 export default Customer;

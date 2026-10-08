@@ -5,6 +5,8 @@ import db from "./config/database.js";
 // Import models (pastikan model mendefinisikan relasinya masing-masing)
 import "./models/User.js";
 import "./models/Product.js";
+import "./models/Category.js";
+import "./models/Service.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";

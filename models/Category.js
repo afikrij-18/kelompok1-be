@@ -2,28 +2,28 @@ import { DataTypes } from "sequelize";
 import db from "../config/database.js";
 
 const Category = db.define(
-    "Categories",
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
-        parent_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
+  "Categories",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {
-        tableName: "categories",
-        timestamps: true,
-    }
+
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    parent_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "categories",
+    timestamps: true,
+  },
 );
 
 // Parent → Children
