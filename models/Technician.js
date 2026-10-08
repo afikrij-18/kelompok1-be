@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import db from "../config/database.js";
 
-const Customer = db.define(
-  "customer",
+const Technician = db.define(
+  "technician",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -16,13 +16,17 @@ const Customer = db.define(
     phone: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true, // Opsional: pastikan nomor telepon unik per customer
+    },
+    status: {
+      type: DataTypes.ENUM("active", "inactive"),
+      defaultValue: "active",
+      allowNull: false,
     },
   },
   {
-    tableName: "customers",
+    tableName: "technicians",
     timestamps: true,
   }
 );
 
-export default Customer;
+export default Technician;

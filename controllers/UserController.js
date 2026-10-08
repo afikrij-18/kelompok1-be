@@ -110,6 +110,13 @@ const createUser = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Validasi role jika ada
+    if (role && !["admin", "owner"].includes(role)) {
+      return res.status(400).json({
+        message: "Role harus berupa admin atau owner",
+      });
+    }
+
     // Buat user
     const user = await User.create({
       name,
@@ -117,7 +124,7 @@ const createUser = async (req, res) => {
       password: hashedPassword,
       phone,
       status,
-      role,
+      role: role || "admin",
     });
 
     return res.status(201).json({

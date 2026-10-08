@@ -9,7 +9,7 @@ export const getServices = async (req, res) => {
                 {
                     model: Category,
                     as: "category",
-                    attributes: ["id", "name", "parent_id"],
+                    attributes: ["id", "name"],
                 },
             ],
         });
@@ -36,7 +36,7 @@ export const getServiceById = async (req, res) => {
                 {
                     model: Category,
                     as: "category",
-                    attributes: ["id", "name", "parent_id"],
+                    attributes: ["id", "name"],
                 },
             ],
         });
