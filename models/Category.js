@@ -14,28 +14,11 @@ const Category = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-
-    parent_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
   },
   {
     tableName: "categories",
     timestamps: true,
   },
 );
-
-// Parent → Children
-// Category.hasMany(Category, {
-//     as: "children",
-//     foreignKey: "parent_id",
-// });
-
-// // Child → Parent
-// Category.belongsTo(Category, {
-//     as: "parent",
-//     foreignKey: "parent_id",
-// });
 
 export default Category;

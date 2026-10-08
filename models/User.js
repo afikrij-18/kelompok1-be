@@ -78,12 +78,12 @@ const User = db.define(
     },
 
     role: {
-      type: DataTypes.ENUM("admin", "technician", "owner"),
+      type: DataTypes.ENUM("admin", "owner"),
       allowNull: true,
       validate: {
         isIn: {
-          args: [["admin", "technician", "owner"]],
-          msg: "Role harus admin, technician, atau owner",
+          args: [["admin", "owner"]],
+          msg: "Role harus admin atau owner",
         },
       },
     },

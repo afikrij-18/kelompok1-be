@@ -1,0 +1,116 @@
+@baseUrl = http://localhost:5000/api
+
+### ========================================
+### 1. AUTH - LOGIN (Admin/Owner)
+### ========================================
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "admin123"
+}
+
+### ========================================
+### 2. CRUD TEKNISI (Admin/Owner)
+### ========================================
+### GET Semua Teknisi
+GET {{baseUrl}}/technicians
+Authorization: Bearer {{login.response.body.data.token}}
+
+### POST Tambah Teknisi
+POST {{baseUrl}}/technicians
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "name": "AAAA Teknisi",
+    "phone": "081212121212",
+    "status": "active"
+}
+
+### PUT Update Teknisi
+PUT {{baseUrl}}/technicians/2
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "name": "Budi Teknisi (Update)",
+    "status": "active"
+}
+
+### ========================================
+### 3. KATEGORI (Flat)
+### ========================================
+### GET Semua Kategori
+GET {{baseUrl}}/categories
+Authorization: Bearer {{login.response.body.data.token}}
+
+### POST Tambah Kategori
+POST {{baseUrl}}/categories
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "name": "Cuci AC"
+}
+
+### ========================================
+### 4. BOOKING (Kalkulasi Otomatis)
+### ========================================
+### POST Tambah Booking
+POST {{baseUrl}}/bookings
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "customer": {
+        "name": "Customer Test",
+        "phone": "08999999999",
+        "address_label": "Rumah Utama",
+        "address": "Jl. Testing No. 1, Padang",
+        "notes_location": "Cat rumah warna oranye dekat tiang listrik"
+    },
+    "booking_date": "2026-10-20",
+    "booking_time": "10:00:00",
+    "notes": "Mohon teknisi datang tepat waktu.",
+    "units": [
+        {
+            "service_id": 1,
+            "brand_ac": "Sharp",
+            "type_ac": "Split",
+            "pk": "1/2",
+            "lokasi": "Ruang Tamu",
+            "keluhan": "Kurang dingin"
+        },
+        {
+            "service_id": 2,
+            "brand_ac": "Panasonic",
+            "type_ac": "Split",
+            "pk": "1",
+            "lokasi": "Kamar Tidur Utama",
+            "keluhan": "Air menetes dari indoor"
+        }
+    ]
+}
+
+### ========================================
+### 5. TRANSAKSI (Payment & Laporan)
+### ========================================
+### POST Tambah Transaksi (Pembayaran)
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+    "booking_id": 1,
+    "payment_method": "cash",
+    "amount_paid": 250000,
+    "payment_status": "paid",
+    "notes": "Pelunasan tunai"
+}
+
+### GET Laporan Keuangan
+GET {{baseUrl}}/transactions/report?from=2026-10-01&to=2026-10-31
+Authorization: Bearer {{login.response.body.data.token}}

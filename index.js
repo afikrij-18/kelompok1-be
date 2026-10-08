@@ -2,18 +2,17 @@ import express from "express";
 import cors from "cors";
 import db from "./config/database.js";
 
-// Import models (pastikan model mendefinisikan relasinya masing-masing)
-import "./models/User.js";
-import "./models/Product.js";
-import "./models/Category.js";
-import "./models/Service.js";
+// Import all models and associations
+import "./models/index.js";
 
 import authRoutes from "./routes/authRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
+import productRoutes from "./routes/ProductRoutes.js";
 import userRoutes from "./routes/UserRoutes.js";
+import technicianRoutes from "./routes/technicianRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 const app = express();
 
@@ -24,8 +23,10 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/technicians", technicianRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/services", serviceRoutes);
+app.use("/api/transactions", transactionRoutes);
 app.use("/api", bookingRoutes);
 
 app.get("/", (req, res) => {
@@ -42,11 +43,7 @@ const startServer = async () => {
     console.log("Database berhasil terhubung");
 
     // Sinkronisasi database
-    // Catatan: Gunakan { alter: true } jika ingin otomatis memperbarui struktur tabel di DB
-    // saat ada perubahan model, tapi hati-hati di lingkungan production.
     await db.sync();
-    // await db.sync({ alter: true });
-
     console.log("Table berhasil dibuat/disinkronisasi");
 
     app.listen(PORT, () => {
