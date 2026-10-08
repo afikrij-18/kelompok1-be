@@ -20,13 +20,19 @@ Service.belongsTo(Category, { as: "category", foreignKey: "category_id" });
 // 2. RELASI CUSTOMER & BOOKING SERVICE
 // ==========================================
 Customer.hasMany(BookingService, { as: "bookings", foreignKey: "customer_id" });
-BookingService.belongsTo(Customer, { as: "customer", foreignKey: "customer_id" });
+BookingService.belongsTo(Customer, {
+  as: "customer",
+  foreignKey: "customer_id",
+});
 
 // ==========================================
 // 3. RELASI BOOKING SERVICE & BOOKING UNIT
 // ==========================================
 BookingService.hasMany(BookingUnit, { as: "units", foreignKey: "booking_id" });
-BookingUnit.belongsTo(BookingService, { as: "booking", foreignKey: "booking_id" });
+BookingUnit.belongsTo(BookingService, {
+  as: "booking",
+  foreignKey: "booking_id",
+});
 
 // ==========================================
 // 4. RELASI SERVICE & BOOKING UNIT
@@ -35,11 +41,4 @@ Service.hasMany(BookingUnit, { as: "bookingUnits", foreignKey: "service_id" });
 BookingUnit.belongsTo(Service, { as: "service", foreignKey: "service_id" });
 
 // Export semuanya bersama instance database
-export {
-    db,
-    Category,
-    Service,
-    Customer,
-    BookingService,
-    BookingUnit,
-};
+export { db, Category, Service, Customer, BookingService, BookingUnit };
