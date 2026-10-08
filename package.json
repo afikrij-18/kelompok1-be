@@ -6,7 +6,15 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "seedBO": "node seeds/seedBooking.js"
+    "seed": "node seeds/index.js",
+    "seed:users": "node seeds/seedUsers.js",
+    "seed:technicians": "node seeds/seedTechnicians.js",
+    "seed:categories": "node seeds/seedCategories.js",
+    "seed:services": "node seeds/seedServices.js",
+    "seed:products": "node seeds/seedProducts.js",
+    "seed:customers": "node seeds/seedCustomers.js",
+    "seed:bookings": "node seeds/seedBookings.js",
+    "seed:transactions": "node seeds/seedTransactions.js"
   },
   "repository": {
     "type": "git",
