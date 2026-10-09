@@ -1,5 +1,13 @@
 import db from "../config/database.js";
-import { BookingService, BookingUnit, Customer, CustomerAddress, Service } from "../models/index.js";
+import {
+  BookingService,
+  BookingUnit,
+  Customer,
+  CustomerAddress,
+  Service,
+  Technician,
+  User,
+} from "../models/index.js";
 
 const run = async () => {
   try {
@@ -14,6 +22,9 @@ const run = async () => {
 
     const customer = await Customer.findOne();
     const address = await CustomerAddress.findOne({ where: { customer_id: customer?.id || 1 } });
+    const technician = await Technician.findOne({ where: { status: "active" } });
+    const admin = await User.findOne({ where: { role: "admin" } });
+
     const service1 = await Service.findByPk(1) || { id: 1, price: 90000 };
     const service2 = await Service.findByPk(2) || { id: 2, price: 175000 };
 
@@ -28,11 +39,13 @@ const run = async () => {
       reg_no: `BK-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-1001`,
       customer_id: customer.id,
       address_id: address.id,
+      technician_id: technician ? technician.id : null,
+      created_by: admin ? admin.id : 1,
       booking_date: "2026-10-25",
       booking_time: "09:00:00",
-      status: "pending",
+      status: "confirmed",
       total_price: total,
-      notes: "Seed booking sample",
+      notes: "Seed booking sample dengan teknisi & admin creator",
     });
 
     await BookingUnit.bulkCreate([
@@ -58,7 +71,7 @@ const run = async () => {
       },
     ]);
 
-    console.log(`[bookings] seeded booking id ${booking.id} with 2 units`);
+    console.log(`[bookings] seeded booking id ${booking.id} (status: confirmed) with 2 units`);
     process.exit(0);
   } catch (err) {
     console.error("[bookings] failed:", err.message);

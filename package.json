@@ -7,6 +7,7 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "seed": "node seeds/index.js",
+    "seed:reset": "node seeds/reset.js",
     "seed:users": "node seeds/seedUsers.js",
     "seed:technicians": "node seeds/seedTechnicians.js",
     "seed:categories": "node seeds/seedCategories.js",

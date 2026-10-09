@@ -5,7 +5,11 @@ import {
   BookingService,
   BookingUnit,
   Service,
+  Technician,
+  Transaction,
+  User,
 } from "../models/index.js";
+import { Op } from "sequelize";
 
 // Helper untuk membuat nomor registrasi unik (contoh: BK-20261008-3176)
 const generateRegNo = () => {
@@ -14,30 +18,58 @@ const generateRegNo = () => {
   return `BK-${date}-${random}`;
 };
 
-// GET - Ambil Semua Data Booking (Lengkap dengan Customer, Alamat, Unit, dan Service)
+// Helper untuk membuat nomor invoice unik (contoh: INV-202610-3819)
+const generateInvoiceNo = () => {
+  const date = new Date().toISOString().slice(0, 7).replace("-", "");
+  const random = Math.floor(1000 + Math.random() * 9000);
+  return `INV-${date}-${random}`;
+};
+
+// Helper cek jadwal teknisi bentrok (toleransi 2 jam)
+const isTechnicianBusy = async (technician_id, booking_date, booking_time, excludeBookingId = null, transaction = null) => {
+  const where = {
+    technician_id,
+    booking_date,
+    status: { [Op.notIn]: ["cancelled", "completed"] },
+  };
+  if (excludeBookingId) {
+    where.id = { [Op.ne]: excludeBookingId };
+  }
+
+  const existing = await BookingService.findAll({ where, transaction });
+
+  // Konversi HH:MM:SS ke menit untuk perbandingan selisih 120 menit
+  const toMinutes = (t) => {
+    const [h, m] = String(t).split(":").map(Number);
+    return h * 60 + (m || 0);
+  };
+  const target = toMinutes(booking_time);
+
+  return existing.some((b) => Math.abs(toMinutes(b.booking_time) - target) < 120);
+};
+
+const bookingIncludes = () => [
+  { model: Customer, as: "customer" },
+  { model: CustomerAddress, as: "address" },
+  { model: Technician, as: "technician" },
+  {
+    model: User,
+    as: "creator",
+    attributes: ["id", "name", "email", "role"],
+  },
+  {
+    model: BookingUnit,
+    as: "units",
+    include: [{ model: Service, as: "service" }],
+  },
+  { model: Transaction, as: "transactions" },
+];
+
+// GET - Ambil Semua Data Booking (Lengkap dengan Customer, Alamat, Unit, Teknisi, Pembuat, dan Transaksi)
 export const getBookings = async (req, res) => {
   try {
     const bookings = await BookingService.findAll({
-      include: [
-        {
-          model: Customer,
-          as: "customer",
-        },
-        {
-          model: CustomerAddress,
-          as: "address", // <-- Alamat spesifik tempat servis dilakukan
-        },
-        {
-          model: BookingUnit,
-          as: "units",
-          include: [
-            {
-              model: Service,
-              as: "service",
-            },
-          ],
-        },
-      ],
+      include: bookingIncludes(),
       order: [["createdAt", "DESC"]],
     });
 
@@ -59,26 +91,7 @@ export const getBookingById = async (req, res) => {
     const { id } = req.params;
 
     const booking = await BookingService.findByPk(id, {
-      include: [
-        {
-          model: Customer,
-          as: "customer",
-        },
-        {
-          model: CustomerAddress,
-          as: "address",
-        },
-        {
-          model: BookingUnit,
-          as: "units",
-          include: [
-            {
-              model: Service,
-              as: "service",
-            },
-          ],
-        },
-      ],
+      include: bookingIncludes(),
     });
 
     if (!booking) {
@@ -99,12 +112,12 @@ export const getBookingById = async (req, res) => {
   }
 };
 
-// POST - Buat Booking Baru (Dengan Alamat Terpisah)
+// POST - Buat Booking Baru (Admin/Owner: auto confirmed + penugasan teknisi + pembayaran langsung)
 export const createBooking = async (req, res) => {
   const t = await db.transaction(); // Gunakan transaksi agar aman
 
   try {
-    const { customer, booking_date, booking_time, notes, units } = req.body;
+    const { customer, booking_date, booking_time, notes, units, technician_id, payment } = req.body;
 
     // 1. Validasi input dasar
     if (!customer || !customer.name || !customer.phone) {
@@ -125,6 +138,24 @@ export const createBooking = async (req, res) => {
     if (!units || !Array.isArray(units) || units.length === 0) {
       await t.rollback();
       return res.status(400).json({ message: "Minimal harus ada 1 unit AC yang diservis" });
+    }
+
+    // 1b. Validasi teknisi (jika ditugaskan) + cek jadwal bentrok
+    if (technician_id) {
+      const tech = await Technician.findByPk(technician_id, { transaction: t });
+      if (!tech) {
+        await t.rollback();
+        return res.status(404).json({ message: "Teknisi tidak ditemukan" });
+      }
+      if (tech.status !== "active") {
+        await t.rollback();
+        return res.status(400).json({ message: "Teknisi tidak aktif, pilih teknisi lain" });
+      }
+      const busy = await isTechnicianBusy(technician_id, booking_date, booking_time, null, t);
+      if (busy) {
+        await t.rollback();
+        return res.status(409).json({ message: "Jadwal teknisi bentrok, pilih teknisi atau jadwal lain" });
+      }
     }
 
     // 2. Cek atau Buat Customer berdasarkan No Telp
@@ -194,18 +225,20 @@ export const createBooking = async (req, res) => {
       });
     }
 
-    // 5. Buat Booking Service Master (Beserta address_id dan total_price)
+    // 5. Buat Booking Service Master (Admin/Owner input -> auto confirmed)
     const reg_no = generateRegNo();
     const newBooking = await BookingService.create(
       {
         reg_no,
         customer_id: customerId,
         address_id: addressId,
+        technician_id: technician_id || null,
         booking_date,
         booking_time,
-        status: "pending",
+        status: "confirmed",
         total_price: calculatedTotalPrice,
         notes: notes || null,
+        created_by: req.user ? req.user.id : null,
       },
       { transaction: t }
     );
@@ -227,19 +260,34 @@ export const createBooking = async (req, res) => {
       );
     }
 
+    // 7. Pembayaran langsung (opsional, jika admin/owner memilih metode + status saat input)
+    let createdTransaction = null;
+    if (payment) {
+      const { payment_method, amount_paid, payment_status, notes: payment_notes } = payment;
+      if (!payment_method) {
+        await t.rollback();
+        return res.status(400).json({ message: "payment_method wajib diisi jika menyertakan pembayaran" });
+      }
+      createdTransaction = await Transaction.create(
+        {
+          booking_id: newBooking.id,
+          invoice_no: generateInvoiceNo(),
+          payment_method,
+          amount_paid: amount_paid !== undefined ? Number(amount_paid) : calculatedTotalPrice,
+          payment_status: payment_status || "paid",
+          payment_date: new Date(),
+          notes: payment_notes || null,
+          created_by: req.user ? req.user.id : null,
+        },
+        { transaction: t }
+      );
+    }
+
     await t.commit();
 
     // Ambil data lengkap untuk response
     const createdBooking = await BookingService.findByPk(newBooking.id, {
-      include: [
-        { model: Customer, as: "customer" },
-        { model: CustomerAddress, as: "address" },
-        {
-          model: BookingUnit,
-          as: "units",
-          include: [{ model: Service, as: "service" }],
-        },
-      ],
+      include: bookingIncludes(),
     });
 
     res.status(201).json({
@@ -268,6 +316,7 @@ export const deleteBooking = async (req, res) => {
     }
 
     await BookingUnit.destroy({ where: { booking_id: id }, transaction: t });
+    await Transaction.destroy({ where: { booking_id: id }, transaction: t });
     await booking.destroy({ transaction: t });
 
     await t.commit();
@@ -290,7 +339,7 @@ export const updateBooking = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { customer, booking_date, booking_time, status, notes, units } = req.body;
+    const { customer, booking_date, booking_time, status, notes, units, technician_id } = req.body;
 
     const existingBooking = await BookingService.findByPk(id, { transaction: t });
     if (!existingBooking) {
@@ -316,6 +365,25 @@ export const updateBooking = async (req, res) => {
     if (!units || !Array.isArray(units) || units.length === 0) {
       await t.rollback();
       return res.status(400).json({ message: "Minimal harus ada 1 unit AC yang diservis" });
+    }
+
+    // Validasi teknisi + cek jadwal bentrok (kecualikan booking ini sendiri)
+    const nextTechnicianId = technician_id !== undefined ? technician_id : existingBooking.technician_id;
+    if (nextTechnicianId) {
+      const tech = await Technician.findByPk(nextTechnicianId, { transaction: t });
+      if (!tech) {
+        await t.rollback();
+        return res.status(404).json({ message: "Teknisi tidak ditemukan" });
+      }
+      if (tech.status !== "active") {
+        await t.rollback();
+        return res.status(400).json({ message: "Teknisi tidak aktif, pilih teknisi lain" });
+      }
+      const busy = await isTechnicianBusy(nextTechnicianId, booking_date, booking_time, existingBooking.id, t);
+      if (busy) {
+        await t.rollback();
+        return res.status(409).json({ message: "Jadwal teknisi bentrok, pilih teknisi atau jadwal lain" });
+      }
     }
 
     // 1. Update data customer
@@ -395,6 +463,7 @@ export const updateBooking = async (req, res) => {
     await existingBooking.update(
       {
         address_id: addressId,
+        technician_id: nextTechnicianId || null,
         booking_date,
         booking_time,
         status: status || existingBooking.status,
@@ -429,15 +498,7 @@ export const updateBooking = async (req, res) => {
     await t.commit();
 
     const updatedBooking = await BookingService.findByPk(id, {
-      include: [
-        { model: Customer, as: "customer" },
-        { model: CustomerAddress, as: "address" },
-        {
-          model: BookingUnit,
-          as: "units",
-          include: [{ model: Service, as: "service" }],
-        },
-      ],
+      include: bookingIncludes(),
     });
 
     res.status(200).json({

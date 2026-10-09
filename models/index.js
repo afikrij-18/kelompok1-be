@@ -58,6 +58,18 @@ Transaction.belongsTo(BookingService, { as: "booking", foreignKey: "booking_id" 
 User.hasMany(Transaction, { as: "transactions", foreignKey: "created_by" });
 Transaction.belongsTo(User, { as: "creator", foreignKey: "created_by" });
 
+// ==========================================
+// 9. RELASI TECHNICIAN & BOOKING SERVICE
+// ==========================================
+Technician.hasMany(BookingService, { as: "bookings", foreignKey: "technician_id" });
+BookingService.belongsTo(Technician, { as: "technician", foreignKey: "technician_id" });
+
+// ==========================================
+// 10. RELASI USER (ADMIN/OWNER) & BOOKING SERVICE (CREATED BY)
+// ==========================================
+User.hasMany(BookingService, { as: "createdBookings", foreignKey: "created_by" });
+BookingService.belongsTo(User, { as: "creator", foreignKey: "created_by" });
+
 // Export semuanya bersama instance database
 export {
   db,

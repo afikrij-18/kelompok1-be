@@ -39,6 +39,14 @@ const BookingService = db.define(
             type: DataTypes.TEXT,
             allowNull: true,
         },
+        technician_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        created_by: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     },
     {
         tableName: "booking_services",

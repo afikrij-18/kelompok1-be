@@ -1,5 +1,6 @@
 import db from "../config/database.js";
-import { Product } from "../models/index.js";
+import Product from "../models/Product.js";
+
 
 const run = async () => {
   try {
