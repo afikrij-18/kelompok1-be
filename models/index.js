@@ -10,6 +10,7 @@ import BookingService from "./BookingService.js";
 import BookingUnit from "./BookingUnit.js";
 import Transaction from "./Transaction.js";
 import WarrantyClaim from "./WarrantyClaim.js";
+import Product from "./Product.js";
 
 import Expense from "./Expense.js";
 import ExpenseCategory from "./ExpenseCategory.js";
@@ -143,6 +144,7 @@ export {
   BookingService,
   BookingUnit,
   Transaction,
+  Product,
   Expense,
   ExpenseCategory,
   WarrantyClaim,

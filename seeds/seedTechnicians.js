@@ -12,13 +12,18 @@ const run = async () => {
       process.exit(0);
     }
 
-    await Technician.bulkCreate([
-      { name: "Budi Santoso", phone: "081212121211", status: "active" },
-      { name: "Agus Wijaya", phone: "081212121212", status: "active" },
-      { name: "Rina Marlina", phone: "081212121213", status: "inactive" },
-    ]);
+    const technicians = [];
+    for (let i = 1; i <= 15; i++) {
+      technicians.push({
+        name: `Teknisi ${i}`,
+        phone: `0812345678${i < 10 ? '0' + i : i}`,
+        status: i % 5 === 0 ? "inactive" : "active",
+      });
+    }
 
-    console.log("[technicians] seeded 3 rows");
+    await Technician.bulkCreate(technicians);
+
+    console.log("[technicians] seeded 15 rows");
     process.exit(0);
   } catch (err) {
     console.error("[technicians] failed:", err.message);

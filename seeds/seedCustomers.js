@@ -12,16 +12,26 @@ const run = async () => {
       process.exit(0);
     }
 
-    const c1 = await Customer.create({ name: "Budi Pratama", phone: "081234567801" });
-    const c2 = await Customer.create({ name: "Siti Rahma", phone: "081234567802" });
+    const customers = [];
+    for (let i = 1; i <= 15; i++) {
+      customers.push({
+        name: `Pelanggan ${i}`,
+        phone: `0812345679${i < 10 ? '0' + i : i}`,
+      });
+    }
 
-    await CustomerAddress.bulkCreate([
-      { customer_id: c1.id, label: "Rumah", address: "Jl. Sudirman No. 10", notes_location: "Pagar hitam" },
-      { customer_id: c1.id, label: "Kantor", address: "Jl. Thamrin Kav 5", notes_location: "Lt 3" },
-      { customer_id: c2.id, label: "Rumah Utama", address: "Jl. Gatot Subroto No. 44", notes_location: null },
-    ]);
+    const createdCustomers = await Customer.bulkCreate(customers);
 
-    console.log("[customers] seeded 2 customers + 3 addresses");
+    const addresses = createdCustomers.map((c, i) => ({
+      customer_id: c.id,
+      label: i % 2 === 0 ? "Rumah" : "Kantor",
+      address: `Jl. Contoh No. ${i + 1}, Kota Jakarta`,
+      notes_location: `Patokan dekat gedung ${i + 1}`,
+    }));
+
+    await CustomerAddress.bulkCreate(addresses);
+
+    console.log("[customers] seeded 15 customers + 15 addresses");
     process.exit(0);
   } catch (err) {
     console.error("[customers] failed:", err.message);

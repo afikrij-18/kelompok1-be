@@ -12,18 +12,20 @@ Content-Type: application/json
   "password": "admin123"
 }
 
+####
+
 @token = {{login.response.body.data.token}}
 
 ###========================================
 ### 1. WARRANTY - CEK STATUS GARANSI
 ###========================================
 # Via Query Param
-GET {{baseUrl}}/warranties/check?booking_unit_id=1
+GET {{baseUrl}}/warranties/check?booking_unit_id=86
 Authorization: Bearer {{token}}
 
 ###
 # Via Path Param
-GET {{baseUrl}}/warranties/check/1
+GET {{baseUrl}}/warranties/check/87
 Authorization: Bearer {{token}}
 
 
@@ -35,7 +37,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "booking_unit_id": 1,
+  "booking_unit_id": 87,
   "keluhan": "AC masih menetes setelah diservis ulang"
 }
 

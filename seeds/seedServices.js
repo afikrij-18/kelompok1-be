@@ -12,15 +12,20 @@ const run = async () => {
       process.exit(0);
     }
 
-    await Service.bulkCreate([
-      { name: "Service AC Biasa", description: "Pemberisihan standar", price: 90000, category_id: 1, warranty_days: 7 },
-      { name: "Service AC Extra (Cuci Steam)", description: "Cuci steam menyeluruh", price: 175000, category_id: 1, warranty_days: 14 },
-      { name: "Perbaikan Kapasitor", description: "Ganti kapasitor baru", price: 250000, category_id: 2, warranty_days: 30 },
-      { name: "Bongkar AC", description: "Bongkar unit AC", price: 150000, category_id: 3, warranty_days: 0 },
-      { name: "Pasang AC", description: "Pasang unit AC", price: 250000, category_id: 3, warranty_days: 30 },
-    ]);
+    const services = [];
+    for (let i = 1; i <= 15; i++) {
+      services.push({
+        name: `Service Premium ${i}`,
+        description: `Deskripsi layanan berkualitas ${i}`,
+        price: 50000 + (i * 10000),
+        category_id: (i % 15) + 1,
+        warranty_days: (i % 30) + 1,
+      });
+    }
 
-    console.log("[services] seeded 5 rows");
+    await Service.bulkCreate(services);
+
+    console.log("[services] seeded 15 rows");
     process.exit(0);
   } catch (err) {
     console.error("[services] failed:", err.message);

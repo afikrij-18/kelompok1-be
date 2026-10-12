@@ -1,6 +1,5 @@
 import db from "../config/database.js";
-import Product from "../models/Product.js";
-
+import { Product } from "../models/index.js";
 
 const run = async () => {
   try {
@@ -13,13 +12,19 @@ const run = async () => {
       process.exit(0);
     }
 
-    await Product.bulkCreate([
-      { name: "Pipa AC 1/4 (Meter)", description: "Pipa tembaga per meter", price: 75000, stock: 100 },
-      { name: "Freon R32 (Tabung)", description: "Isi ulang/tabung freon", price: 450000, stock: 15 },
-      { name: "Remote AC Universal", description: "Bisa untuk segala jenis AC", price: 65000, stock: 25 },
-    ]);
+    const products = [];
+    for (let i = 1; i <= 15; i++) {
+      products.push({
+        name: `Produk Sparepart ${i}`,
+        description: `Deskripsi komponen kualitas tinggi ${i}`,
+        price: 50000 + (i * 5000),
+        stock: 10 + (i * 2),
+      });
+    }
 
-    console.log("[products] seeded 3 rows");
+    await Product.bulkCreate(products);
+
+    console.log("[products] seeded 15 rows");
     process.exit(0);
   } catch (err) {
     console.error("[products] failed:", err.message);

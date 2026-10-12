@@ -13,29 +13,27 @@ const run = async () => {
       process.exit(0);
     }
 
-    const passwordAdmin = await bcrypt.hash("admin123", 10);
-    const passwordOwner = await bcrypt.hash("owner123", 10);
+    const password = await bcrypt.hash("password123", 10);
 
-    await User.bulkCreate([
-      {
-        name: "Admin Utama",
-        email: "admin@example.com",
-        password: passwordAdmin,
-        phone: "081234567890",
+    const users = [
+      { name: "Admin Utama", email: "admin@example.com", password, phone: "081234567890", status: "active", role: "admin" },
+      { name: "Owner Utama", email: "owner@example.com", password, phone: "081234567891", status: "active", role: "owner" },
+    ];
+
+    for (let i = 1; i <= 13; i++) {
+      users.push({
+        name: `Admin Dummy ${i}`,
+        email: `admin${i}@example.com`,
+        password,
+        phone: `0812000000${i < 10 ? '0' + i : i}`,
         status: "active",
         role: "admin",
-      },
-      {
-        name: "Owner Utama",
-        email: "owner@example.com",
-        password: passwordOwner,
-        phone: "081234567891",
-        status: "active",
-        role: "owner",
-      },
-    ]);
+      });
+    }
 
-    console.log("[users] seeded: admin@example.com / owner@example.com");
+    await User.bulkCreate(users);
+
+    console.log("[users] seeded 15 rows");
     process.exit(0);
   } catch (err) {
     console.error("[users] failed:", err.message);
