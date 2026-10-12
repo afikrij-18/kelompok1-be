@@ -1,0 +1,247 @@
+@baseUrl = http://localhost:5000/api
+
+###========================================
+###AUTH - LOGIN
+###========================================
+# @name login
+
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+###========================================
+###EXPENSE CATEGORY - KATEGORI UANG KELUAR
+###========================================
+
+###1. GET - Semua Kategori Uang Keluar
+
+GET {{baseUrl}}/expense-categories
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###2. GET - Kategori Berdasarkan ID
+###========================================
+
+GET {{baseUrl}}/expense-categories/1
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###3. POST - Tambah Kategori Uang Keluar
+###========================================
+
+POST {{baseUrl}}/expense-categories
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "nama": "Perlengkapan Kantor",
+  "deskripsi": "Biaya pembelian perlengkapan kantor"
+}
+
+###========================================
+###4. PUT - Update Kategori Uang Keluar
+###========================================
+
+PUT {{baseUrl}}/expense-categories/1
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "nama": "Operasional Usaha",
+  "deskripsi": "Biaya operasional harian usaha"
+}
+
+###========================================
+###5. DELETE - Hapus Kategori Uang Keluar
+###========================================
+# Gunakan ID kategori yang tidak digunakan transaksi.
+
+DELETE {{baseUrl}}/expense-categories/2
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###EXPENSE - UANG KELUAR
+###========================================
+
+###1. GET - Semua Uang Keluar
+
+GET {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###2. GET - Uang Keluar dengan Pagination
+###========================================
+
+GET {{baseUrl}}/expenses?page=1&limit=10
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###3. GET - Filter Berdasarkan Kategori
+###========================================
+
+GET {{baseUrl}}/expenses?category_id=1
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###4. GET - Filter Berdasarkan Tanggal
+###========================================
+
+GET {{baseUrl}}/expenses?from=2026-10-01&to=2026-10-31
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###5. GET - Filter Berdasarkan Metode
+###========================================
+
+GET {{baseUrl}}/expenses?metode=cash
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###6. GET - Cari Berdasarkan Keterangan
+###========================================
+
+GET {{baseUrl}}/expenses?search=perlengkapan
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###7. GET - Detail Uang Keluar Berdasarkan ID
+###========================================
+
+GET {{baseUrl}}/expenses/1
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###8. POST - Tambah Uang Keluar
+###========================================
+
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "2026-10-12",
+  "category_id": 1,
+  "keterangan": "Pembelian perlengkapan kerja",
+  "metode": "cash",
+  "jumlah": 150000
+}
+
+###========================================
+###9. PUT - Update Uang Keluar
+###========================================
+
+PUT {{baseUrl}}/expenses/1
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "2026-10-12",
+  "category_id": 1,
+  "keterangan": "Pembelian perlengkapan kerja dan alat tulis",
+  "metode": "transfer_bank",
+  "jumlah": 175000
+}
+
+###========================================
+###10. PUT - Update Sebagian Uang Keluar
+###========================================
+
+PUT {{baseUrl}}/expenses/1
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "jumlah": 200000
+}
+
+###========================================
+###11. DELETE - Hapus Uang Keluar
+###========================================
+# Pastikan ID mengarah ke transaksi khusus pengujian.
+
+DELETE {{baseUrl}}/expenses/1
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###VALIDASI - UANG KELUAR
+###========================================
+
+###12. POST - Jumlah Nol Seharusnya 400
+
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "2026-10-12",
+  "category_id": 1,
+  "keterangan": "Pengujian validasi jumlah",
+  "metode": "cash",
+  "jumlah": 0
+}
+
+###========================================
+###13. POST - Metode Tidak Valid Seharusnya 400
+###========================================
+
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "2026-10-12",
+  "category_id": 1,
+  "keterangan": "Pengujian validasi metode",
+  "metode": "kartu_kredit",
+  "jumlah": 50000
+}
+
+###========================================
+###14. POST - Tanggal Tidak Valid Seharusnya 400
+###========================================
+
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "12-10-2026",
+  "category_id": 1,
+  "keterangan": "Pengujian validasi tanggal",
+  "metode": "cash",
+  "jumlah": 50000
+}
+
+###========================================
+###15. POST - Kategori Tidak Ditemukan Seharusnya 400
+###========================================
+
+POST {{baseUrl}}/expenses
+Authorization: Bearer {{login.response.body.data.token}}
+Content-Type: application/json
+
+{
+  "tanggal": "2026-10-12",
+  "category_id": 999999,
+  "keterangan": "Pengujian kategori tidak ditemukan",
+  "metode": "cash",
+  "jumlah": 50000
+}
+
+###========================================
+###16. GET - Uang Keluar Tidak Ditemukan Seharusnya 404
+###========================================
+
+GET {{baseUrl}}/expenses/999999
+Authorization: Bearer {{login.response.body.data.token}}
+
+###========================================
+###AUTH - LOGOUT
+###========================================
+
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{login.response.body.data.token}}

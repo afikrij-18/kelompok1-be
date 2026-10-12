@@ -15,7 +15,9 @@
     "seed:products": "node seeds/seedProducts.js",
     "seed:customers": "node seeds/seedCustomers.js",
     "seed:bookings": "node seeds/seedBookings.js",
-    "seed:transactions": "node seeds/seedTransactions.js"
+    "seed:transactions": "node seeds/seedTransactions.js",
+    "seed:expense-categories": "node seeds/seedExpenseCategories.js",
+    "seed:expenses": "node seeds/seedExpenses.js"
   },
   "repository": {
     "type": "git",
