@@ -13,6 +13,8 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
+import expenseCategoryRoutes from "./routes/expenseCategoryRoutes.js";
 
 const app = express();
 
@@ -27,6 +29,8 @@ app.use("/api/technicians", technicianRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/expense-categories", expenseCategoryRoutes);
 app.use("/api", bookingRoutes);
 
 app.get("/", (req, res) => {
