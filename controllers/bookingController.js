@@ -10,6 +10,7 @@ import {
   User,
 } from "../models/index.js";
 import { Op } from "sequelize";
+import { issueWarrantyForBooking } from "../utils/warrantyHelper.js";
 
 // Helper untuk membuat nomor registrasi unik (contoh: BK-20261008-3176)
 const generateRegNo = () => {
@@ -78,6 +79,7 @@ export const getBookings = async (req, res) => {
       data: bookings,
     });
   } catch (error) {
+    console.error("getBookings error:", error);
     res.status(500).json({
       message: "Gagal mengambil data booking",
       error: error.message,
@@ -105,6 +107,7 @@ export const getBookingById = async (req, res) => {
       data: booking,
     });
   } catch (error) {
+    console.error("getBookings error:", error);
     res.status(500).json({
       message: "Gagal mengambil data booking",
       error: error.message,
@@ -472,6 +475,11 @@ export const updateBooking = async (req, res) => {
       },
       { transaction: t }
     );
+
+    // Jika status diubah menjadi completed melalui updateBooking, terbitkan garansi
+    if (existingBooking.status === "completed") {
+      await issueWarrantyForBooking(existingBooking.id, t);
+    }
 
     // 5. Update Units
     await BookingUnit.destroy({

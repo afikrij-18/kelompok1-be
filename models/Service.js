@@ -30,6 +30,12 @@ const Service = db.define(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        warranty_days: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+            validate: { min: 0 },
+        },
     },
     {
         tableName: "services",

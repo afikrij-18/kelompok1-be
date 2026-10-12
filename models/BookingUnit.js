@@ -41,6 +41,10 @@ const BookingUnit = db.define(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        warranty_expiry_date: {
+            type: DataTypes.DATEONLY,
+            allowNull: true,
+        },
     },
     {
         tableName: "booking_units",

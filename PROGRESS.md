@@ -14,10 +14,11 @@ Dokumen ini berisi rincian teknis dari progres pengembangan backend pada sistem 
 Sistem ini mengadopsi arsitektur **MVC (Model-View-Controller)** pada lapisan backend (tanpa View). Struktur direktorinya adalah sebagai berikut:
 
 - `config/` : Berisi pengaturan dan konfigurasi sistem (`database.js` untuk koneksi ke MySQL).
-- `models/` : Berisi representasi tabel database ke dalam bentuk objek (Sequelize Models) beserta definisi relasinya (`User.js`, `Technician.js`, `Product.js`, `Category.js`, `Service.js`, `Customer.js`, `CustomerAddress.js`, `BookingService.js`, `BookingUnit.js`, `Transaction.js`, `index.js`).
-- `controllers/` : Berisi *business logic* utama (`authController.js`, `UserController.js`, `TechnicianController.js`, `ProductController.js`, `CategoryController.js`, `ServiceController.js`, `bookingController.js`, `TransactionController.js`).
-- `routes/` : Berisi definisi *endpoint* API (`authRoutes.js`, `UserRoutes.js`, `technicianRoutes.js`, `ProductRoutes.js`, `categoryRoutes.js`, `serviceRoutes.js`, `bookingRoutes.js`, `transactionRoutes.js`).
+- `models/` : Berisi representasi tabel database ke dalam bentuk objek (Sequelize Models) beserta definisi relasinya (`User.js`, `Technician.js`, `Product.js`, `Category.js`, `Service.js`, `Customer.js`, `CustomerAddress.js`, `BookingService.js`, `BookingUnit.js`, `Transaction.js`, `Expense.js`, `ExpenseCategory.js`, `index.js`).
+- `controllers/` : Berisi *business logic* utama (`authController.js`, `UserController.js`, `TechnicianController.js`, `ProductController.js`, `CategoryController.js`, `ServiceController.js`, `bookingController.js`, `TransactionController.js`, `ExpenseController.js`, `ExpenseCategoryController.js`).
+- `routes/` : Berisi definisi *endpoint* API (`authRoutes.js`, `UserRoutes.js`, `technicianRoutes.js`, `ProductRoutes.js`, `categoryRoutes.js`, `serviceRoutes.js`, `bookingRoutes.js`, `transactionRoutes.js`, `expenseRoutes.js`, `expenseCategoryRoutes.js`).
 - `middlewares/` : Berisi fungsi perantara seperti `authMiddleware` (validasi JWT) dan `roleMiddleware` (pembatasan hak akses `admin`, `owner`).
+- `seeds/` : Berisi skrip seeding data awal master data, user, booking, transaksi, dan pengeluaran.
 - `database/` : Berisi file *dump* SQL (`kelompok1_db.sql`).
 
 ## 3. Detail Skema Database & Relasi
@@ -53,9 +54,15 @@ Sistem ini menggunakan relasi database yang terstruktur dengan pemisahan entitas
     - Kolom: `id`, `booking_id` (FK ke `booking_services`), `invoice_no` (unik, contoh `INV-202610-001`), `payment_method` (ENUM: cash, transfer_bank, qris), `amount_paid`, `payment_status` (ENUM: pending, paid, failed), `payment_date`, `notes`, `created_by` (FK ke `users`), `createdAt`, `updatedAt`
     - Catatan: Tidak memakai field `transaction_no` dan `proof_image`. Nomor referensi memakai `invoice_no`, catatan tambahan memakai `notes`.
     - Relasi: *Belongs-To* ke `booking_services` dan ke `users` (pencatat pembayaran).
+11. **`expense_categories`** (Tabel Kategori Pengeluaran / Uang Keluar)
+    - Kolom: `id`, `nama` (unik), `deskripsi`, `status` (ENUM: active, inactive), `createdAt`, `updatedAt`
+    - Catatan: Kategori terhubung ke pencatatan `expenses`. Jika kategori sudah memiliki riwayat transaksi pengeluaran, kategori tidak dapat dihapus (`RESTRICT`) demi menjaga integritas data riwayat.
+12. **`expenses`** (Tabel Pencatatan Uang Keluar / Pengeluaran Operasional)
+    - Kolom: `id`, `tanggal` (DATEONLY, `YYYY-MM-DD`), `category_id` (FK ke `expense_categories`), `keterangan` (TEXT), `metode` (ENUM: cash, transfer_bank, qris), `jumlah` (BIGINT UNSIGNED), `created_by` (FK ke `users`), `createdAt`, `updatedAt`
+    - Relasi: *Belongs-To* ke `expense_categories` dan *Belongs-To* ke `users` (pencatat pengeluaran).
 
 ## 4. Alur Proses (Workflow) Terkini
-Alur kerja end-to-end: `Master Data -> Booking (Auto Confirmed + Teknisi + Payment Langsung) -> Transaction (invoice_no + notes) -> Laporan Keuangan`.
+Alur kerja end-to-end: `Master Data -> Booking (Auto Confirmed + Teknisi + Payment Langsung) -> Transaction (Pemasukan) & Expense (Pengeluaran) -> Laporan Keuangan`.
 
 **A. Alur Admin & Owner**
 - **Autentikasi:** *Login* (POST `/api/auth/login`) memakai tabel `users` untuk mendapatkan JWT. Hanya `admin` dan `owner`.
@@ -64,6 +71,7 @@ Alur kerja end-to-end: `Master Data -> Booking (Auto Confirmed + Teknisi + Payme
   - Master Teknisi (`/api/technicians`).
   - Master Suku Cadang (`/api/products`).
   - Master Layanan (`/api/categories` flat dan `/api/services`).
+  - Master Kategori Pengeluaran (`/api/expense-categories`).
 - **Proses Pemesanan / Booking (`POST /api/bookings`):**
   - Input dari Admin/Owner otomatis berstatus `confirmed` (bukan `pending`).
   - Pencatatan audit trail: `created_by` diisi otomatis dari ID Admin/Owner yang sedang login.
@@ -72,8 +80,13 @@ Alur kerja end-to-end: `Master Data -> Booking (Auto Confirmed + Teknisi + Payme
 - **Proses Pembayaran / Transaksi Terpisah (`/api/transactions`):**
   - Pembuatan transaksi per booking dengan `generateInvoiceNo()`.
   - Validasi nominal dan pencatatan kasir.
-- **Laporan Keuangan (`GET /api/transactions/report?from=&to=`):**
-  - Rekap omzet harian/bulanan, rekap per `payment_method`, dan piutang.
+- **Pengelolaan Uang Keluar / Expense (`/api/expenses`):**
+  - Pencatatan biaya operasional, pembelian alat, atau pengeluaran harian usaha.
+  - Validasi tanggal (`YYYY-MM-DD`), metode (`cash`, `transfer_bank`, `qris`), dan nominal pengeluaran.
+  - Dukungan filter lengkap (berdasarkan `category_id`, `metode`, rentang tanggal `from` & `to`, pencarian kata kunci `search`, serta pagination).
+  - Otomatis menghitung total nilai pengeluaran kumulatif (`total_pengeluaran`).
+- **Laporan Keuangan (`GET /api/transactions/report?from=&to=` & `/api/expenses`):**
+  - Rekap omzet harian/bulanan, rekap per `payment_method`, piutang, dan pencatatan arus uang keluar.
 
 **B. Alur Akses Publik / Tamu (Guest)**
 - Semua jalur API saat ini terproteksi JWT Admin/Owner. Guest belum memiliki alur *self-service booking*.

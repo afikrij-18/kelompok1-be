@@ -1,0 +1,74 @@
+@baseUrl = http://localhost:5000/api
+
+###========================================
+### AUTH - LOGIN
+###========================================
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+@token = {{login.response.body.data.token}}
+
+###========================================
+### 1. WARRANTY - CEK STATUS GARANSI
+###========================================
+# Via Query Param
+GET {{baseUrl}}/warranties/check?booking_unit_id=1
+Authorization: Bearer {{token}}
+
+###
+# Via Path Param
+GET {{baseUrl}}/warranties/check/1
+Authorization: Bearer {{token}}
+
+
+###========================================
+### 2. WARRANTY CLAIMS - POST KLAIM GARANSI
+###========================================
+POST {{baseUrl}}/warranties/claims
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "booking_unit_id": 1,
+  "keluhan": "AC masih menetes setelah diservis ulang"
+}
+
+
+###========================================
+### 3. WARRANTY CLAIMS - GET SEMUA KLAIM
+###========================================
+GET {{baseUrl}}/warranties/claims
+Authorization: Bearer {{token}}
+
+
+###========================================
+### 4. WARRANTY CLAIMS - GET DETAIL KLAIM
+###========================================
+GET {{baseUrl}}/warranties/claims/1
+Authorization: Bearer {{token}}
+
+
+###========================================
+### 5. WARRANTY CLAIMS - UPDATE STATUS KLAIM
+###========================================
+PUT {{baseUrl}}/warranties/claims/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "approved",
+  "resolution_notes": "Teknisi dijadwalkan ulang untuk pengecekan gratis."
+}
+
+
+###========================================
+### 6. WARRANTY CLAIMS - DELETE KLAIM
+###========================================
+DELETE {{baseUrl}}/warranties/claims/1
+Authorization: Bearer {{token}}

@@ -67,6 +67,7 @@ export const createService = async (req, res) => {
             description,
             price,
             category_id,
+            warranty_days,
         } = req.body;
 
         // Validasi field wajib
@@ -80,6 +81,12 @@ export const createService = async (req, res) => {
         if (isNaN(price) || Number(price) < 0) {
             return res.status(400).json({
                 message: "Harga service harus berupa angka yang valid",
+            });
+        }
+
+        if (warranty_days !== undefined && (isNaN(warranty_days) || Number(warranty_days) < 0)) {
+            return res.status(400).json({
+                message: "warranty_days harus berupa angka >= 0 (satuan hari)",
             });
         }
 
@@ -97,6 +104,7 @@ export const createService = async (req, res) => {
             description: description || null,
             price: Number(price),
             category_id,
+            warranty_days: warranty_days !== undefined ? Number(warranty_days) : 0,
         });
 
         res.status(201).json({
@@ -120,6 +128,7 @@ export const updateService = async (req, res) => {
             description,
             price,
             category_id,
+            warranty_days,
         } = req.body;
 
         const service = await Service.findByPk(id);
@@ -144,6 +153,12 @@ export const updateService = async (req, res) => {
             });
         }
 
+        if (warranty_days !== undefined && (isNaN(warranty_days) || Number(warranty_days) < 0)) {
+            return res.status(400).json({
+                message: "warranty_days harus berupa angka >= 0 (satuan hari)",
+            });
+        }
+
         // Cek kategori baru
         const category = await Category.findByPk(category_id);
 
@@ -158,6 +173,7 @@ export const updateService = async (req, res) => {
             description: description || null,
             price: Number(price),
             category_id,
+            warranty_days: warranty_days !== undefined ? Number(warranty_days) : service.warranty_days,
         });
 
         res.status(200).json({

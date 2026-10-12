@@ -1,5 +1,6 @@
 import { Transaction, BookingService, User } from "../models/index.js";
 import { Op } from "sequelize";
+import { issueWarrantyForBooking } from "../utils/warrantyHelper.js";
 
 // Helper untuk generate nomor invoice unik (contoh: INV-202610-3819)
 const generateInvoiceNo = () => {
@@ -104,8 +105,9 @@ export const createTransaction = async (req, res) => {
     });
 
     // Jika pembayaran lunas, update status booking menjadi completed/confirmed
-    if (transaction.payment_status === "paid" && amount_paid >= booking.total_price) {
+    if (transaction.payment_status === "paid" && Number(amount_paid) >= Number(booking.total_price)) {
       await booking.update({ status: "completed" });
+      await issueWarrantyForBooking(booking.id);
     }
 
     res.status(201).json({
@@ -137,6 +139,18 @@ export const updateTransaction = async (req, res) => {
       payment_status: payment_status ?? transaction.payment_status,
       notes: notes ?? transaction.notes,
     });
+
+    // Jika status berubah menjadi lunas, selesaikan booking + terbitkan garansi
+    const booking = await BookingService.findByPk(transaction.booking_id);
+    if (
+      booking &&
+      transaction.payment_status === "paid" &&
+      Number(transaction.amount_paid) >= Number(booking.total_price) &&
+      booking.status !== "completed"
+    ) {
+      await booking.update({ status: "completed" });
+      await issueWarrantyForBooking(booking.id);
+    }
 
     res.status(200).json({
       message: "Transaksi berhasil diperbarui",

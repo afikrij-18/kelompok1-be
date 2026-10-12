@@ -17,7 +17,8 @@
     "seed:bookings": "node seeds/seedBookings.js",
     "seed:transactions": "node seeds/seedTransactions.js",
     "seed:expense-categories": "node seeds/seedExpenseCategories.js",
-    "seed:expenses": "node seeds/seedExpenses.js"
+    "seed:expenses": "node seeds/seedExpenses.js",
+    "seed:warranties": "node seeds/seedWarranties.js"
   },
   "repository": {
     "type": "git",

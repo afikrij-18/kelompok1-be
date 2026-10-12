@@ -13,11 +13,11 @@ const run = async () => {
     }
 
     await Service.bulkCreate([
-      { name: "Service AC Biasa", description: "Pemberisihan standar", price: 90000, category_id: 1 },
-      { name: "Service AC Extra (Cuci Steam)", description: "Cuci steam menyeluruh", price: 175000, category_id: 1 },
-      { name: "Perbaikan Kapasitor", description: "Ganti kapasitor baru", price: 250000, category_id: 2 },
-      { name: "Bongkar AC", description: "Bongkar unit AC", price: 150000, category_id: 3 },
-      { name: "Pasang AC", description: "Pasang unit AC", price: 250000, category_id: 3 },
+      { name: "Service AC Biasa", description: "Pemberisihan standar", price: 90000, category_id: 1, warranty_days: 7 },
+      { name: "Service AC Extra (Cuci Steam)", description: "Cuci steam menyeluruh", price: 175000, category_id: 1, warranty_days: 14 },
+      { name: "Perbaikan Kapasitor", description: "Ganti kapasitor baru", price: 250000, category_id: 2, warranty_days: 30 },
+      { name: "Bongkar AC", description: "Bongkar unit AC", price: 150000, category_id: 3, warranty_days: 0 },
+      { name: "Pasang AC", description: "Pasang unit AC", price: 250000, category_id: 3, warranty_days: 30 },
     ]);
 
     console.log("[services] seeded 5 rows");

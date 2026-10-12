@@ -9,6 +9,7 @@ import CustomerAddress from "./CustomerAddress.js";
 import BookingService from "./BookingService.js";
 import BookingUnit from "./BookingUnit.js";
 import Transaction from "./Transaction.js";
+import WarrantyClaim from "./WarrantyClaim.js";
 
 import Expense from "./Expense.js";
 import ExpenseCategory from "./ExpenseCategory.js";
@@ -63,6 +64,14 @@ BookingUnit.belongsTo(BookingService, {
   foreignKey: "booking_id",
 });
 
+// Teknisi dan booking
+Technician.hasMany(BookingService, { as: "bookings", foreignKey: "technician_id" });
+BookingService.belongsTo(Technician, { as: "technician", foreignKey: "technician_id" });
+
+// User (pembuat) dan booking
+User.hasMany(BookingService, { as: "createdBookings", foreignKey: "created_by" });
+BookingService.belongsTo(User, { as: "creator", foreignKey: "created_by" });
+
 // 6. Service dan unit
 Service.hasMany(BookingUnit, {
   as: "bookingUnits",
@@ -115,6 +124,14 @@ Expense.belongsTo(User, {
   foreignKey: "created_by",
 });
 
+// 11. Warranty Claim
+BookingUnit.hasMany(WarrantyClaim, { as: "claims", foreignKey: "booking_unit_id" });
+WarrantyClaim.belongsTo(BookingUnit, { as: "unit", foreignKey: "booking_unit_id" });
+User.hasMany(WarrantyClaim, { as: "createdClaims", foreignKey: "created_by" });
+WarrantyClaim.belongsTo(User, { as: "creator", foreignKey: "created_by" });
+User.hasMany(WarrantyClaim, { as: "handledClaims", foreignKey: "handled_by" });
+WarrantyClaim.belongsTo(User, { as: "handler", foreignKey: "handled_by" });
+
 export {
   db,
   User,
@@ -128,4 +145,5 @@ export {
   Transaction,
   Expense,
   ExpenseCategory,
+  WarrantyClaim,
 };
