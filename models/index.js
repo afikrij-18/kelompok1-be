@@ -14,6 +14,7 @@ import Product from "./Product.js";
 
 import Expense from "./Expense.js";
 import ExpenseCategory from "./ExpenseCategory.js";
+import Bank from "./Bank.js";
 
 // 1. Kategori layanan dan service
 Category.hasMany(Service, {
@@ -125,6 +126,12 @@ Expense.belongsTo(User, {
   foreignKey: "created_by",
 });
 
+// 12. Master bank untuk expenses & transactions
+Bank.hasMany(Expense, { as: "expenses", foreignKey: "bank_id" });
+Expense.belongsTo(Bank, { as: "bank_ref", foreignKey: "bank_id" });
+Bank.hasMany(Transaction, { as: "transactions", foreignKey: "bank_id" });
+Transaction.belongsTo(Bank, { as: "bank_ref", foreignKey: "bank_id" });
+
 // 11. Warranty Claim
 BookingUnit.hasMany(WarrantyClaim, { as: "claims", foreignKey: "booking_unit_id" });
 WarrantyClaim.belongsTo(BookingUnit, { as: "unit", foreignKey: "booking_unit_id" });
@@ -147,5 +154,6 @@ export {
   Product,
   Expense,
   ExpenseCategory,
+  Bank,
   WarrantyClaim,
 };

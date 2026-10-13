@@ -7,6 +7,7 @@ import {
   Service,
   Technician,
   Transaction,
+  Bank,
   User,
 } from "../models/index.js";
 import { Op } from "sequelize";
@@ -63,20 +64,61 @@ const bookingIncludes = () => [
     as: "units",
     include: [{ model: Service, as: "service" }],
   },
-  { model: Transaction, as: "transactions" },
+  { model: Transaction, as: "transactions", include: [{ model: Bank, as: "bank_ref" }] },
 ];
 
 // GET - Ambil Semua Data Booking (Lengkap dengan Customer, Alamat, Unit, Teknisi, Pembuat, dan Transaksi)
 export const getBookings = async (req, res) => {
   try {
-    const bookings = await BookingService.findAll({
-      include: bookingIncludes(),
+    const { page = 1, limit = 10, search = "", status = "" } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const offset = (pageNum - 1) * limitNum;
+
+    const where = {};
+    if (status && status !== "Semua") {
+      where.status = status;
+    }
+
+    const include = bookingIncludes();
+    if (search) {
+      const like = `%${search}%`;
+      include[0] = {
+        model: Customer,
+        as: "customer",
+        required: true,
+        where: {
+          [Op.or]: [
+            { name: { [Op.like]: like } },
+            { phone: { [Op.like]: like } },
+          ],
+        },
+      };
+      where[Op.or] = [
+        { reg_no: { [Op.like]: like } },
+        { "$customer.name$": { [Op.like]: like } },
+        { "$customer.phone$": { [Op.like]: like } },
+      ];
+    }
+
+    const { count, rows } = await BookingService.findAndCountAll({
+      where,
+      include,
       order: [["createdAt", "DESC"]],
+      limit: limitNum,
+      offset: offset,
+      distinct: true,
     });
 
     res.status(200).json({
-      message: "Data semua booking berhasil diambil",
-      data: bookings,
+      message: "Data booking berhasil diambil",
+      data: rows,
+      meta: {
+        totalItems: count,
+        totalPages: Math.max(1, Math.ceil(count / limitNum)),
+        currentPage: pageNum,
+        limit: limitNum,
+      },
     });
   } catch (error) {
     console.error("getBookings error:", error);
@@ -266,16 +308,21 @@ export const createBooking = async (req, res) => {
     // 7. Pembayaran langsung (opsional, jika admin/owner memilih metode + status saat input)
     let createdTransaction = null;
     if (payment) {
-      const { payment_method, amount_paid, payment_status, notes: payment_notes } = payment;
+      const { payment_method, bank_id, amount_paid, payment_status, notes: payment_notes } = payment;
       if (!payment_method) {
         await t.rollback();
         return res.status(400).json({ message: "payment_method wajib diisi jika menyertakan pembayaran" });
+      }
+      if (payment_method === "transfer_bank" && !bank_id) {
+        await t.rollback();
+        return res.status(400).json({ message: "bank_id wajib diisi untuk transfer" });
       }
       createdTransaction = await Transaction.create(
         {
           booking_id: newBooking.id,
           invoice_no: generateInvoiceNo(),
           payment_method,
+          bank_id: payment_method === "transfer_bank" ? bank_id : null,
           amount_paid: amount_paid !== undefined ? Number(amount_paid) : calculatedTotalPrice,
           payment_status: payment_status || "paid",
           payment_date: new Date(),
@@ -463,31 +510,35 @@ export const updateBooking = async (req, res) => {
     }
 
     // 4. Update Master Booking
+    const finalStatus = status || existingBooking.status;
+    const wasCompleted = existingBooking.status === "completed";
+    const willBeCompleted = finalStatus === "completed";
+    // Simpan expiry lama agar tidak hilang saat edit: destroy + create ulang
+    const oldUnits = await BookingUnit.findAll({ where: { booking_id: id }, transaction: t });
+    const expiryMap = new Map(oldUnits.map((u) => [u.id, u.warranty_expiry_date]));
+
     await existingBooking.update(
       {
         address_id: addressId,
         technician_id: nextTechnicianId || null,
         booking_date,
         booking_time,
-        status: status || existingBooking.status,
+        status: finalStatus,
         total_price: calculatedTotalPrice,
         notes: notes || null,
       },
       { transaction: t }
     );
 
-    // Jika status diubah menjadi completed melalui updateBooking, terbitkan garansi
-    if (existingBooking.status === "completed") {
-      await issueWarrantyForBooking(existingBooking.id, t);
-    }
-
-    // 5. Update Units
+    // 5. Update Units — pertahankan warranty_expiry_date yang sudah ada
     await BookingUnit.destroy({
       where: { booking_id: id },
       transaction: t,
     });
 
-    for (const unit of validatedUnits) {
+    for (let idx = 0; idx < validatedUnits.length; idx++) {
+      const unit = validatedUnits[idx];
+      const old = oldUnits[idx];
       await BookingUnit.create(
         {
           booking_id: existingBooking.id,
@@ -498,9 +549,28 @@ export const updateBooking = async (req, res) => {
           lokasi: unit.lokasi,
           keluhan: unit.keluhan || null,
           price: unit.price,
+          warranty_expiry_date: old ? expiryMap.get(old.id) : null,
         },
         { transaction: t }
       );
+    }
+
+    // Terbitkan garansi hanya jika LUNAS (total paid >= total_price) + SELESAI
+    if (willBeCompleted) {
+      const totalPaid = await Transaction.sum("amount_paid", {
+        where: { booking_id: id, payment_status: "paid" },
+        transaction: t,
+      });
+      if (Number(totalPaid || 0) >= Number(existingBooking.total_price || 0)) {
+        // Cari transaksi lunas terakhir sebagai start garansi; fallback hari ini
+        const lastPaid = await Transaction.findOne({
+          where: { booking_id: id, payment_status: "paid" },
+          order: [["payment_date", "DESC"]],
+          transaction: t,
+        });
+        const start = lastPaid?.payment_date || new Date();
+        await issueWarrantyForBooking(existingBooking.id, t, start);
+      }
     }
 
     await t.commit();

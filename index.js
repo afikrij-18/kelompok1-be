@@ -15,6 +15,7 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import transactionRoutes from "./routes/transactionRoutes.js";
 import expenseRoutes from "./routes/expenseRoutes.js";
 import expenseCategoryRoutes from "./routes/expenseCategoryRoutes.js";
+import bankRoutes from "./routes/bankRoutes.js";
 import warrantyRoutes from "./routes/warrantyRoutes.js";
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/expenses", expenseRoutes);
 app.use("/api/expense-categories", expenseCategoryRoutes);
+app.use("/api/banks", bankRoutes);
 app.use("/api/warranties", warrantyRoutes);
 app.use("/api", bookingRoutes);
 

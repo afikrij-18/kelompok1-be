@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Expense, ExpenseCategory, User } from "../models/index.js";
+import { Expense, ExpenseCategory, User, Bank } from "../models/index.js";
 
 const METHODS = ["cash", "transfer_bank", "qris"];
 
@@ -31,6 +31,10 @@ const validateExpense = (body, partial = false) => {
         errors[field] = `${field} wajib diisi`;
       }
     }
+  }
+
+  if (body.metode === "transfer_bank" && !body.bank_id && !body.bank) {
+    errors.bank_id = "bank_id wajib untuk transfer";
   }
 
   if (body.tanggal !== undefined && !isValidDate(body.tanggal)) {
@@ -72,11 +76,31 @@ const validateExpense = (body, partial = false) => {
   }
 
   // Tolak field asing supaya input tidak diam-diam diabaikan.
-  const allowed = new Set(required);
+  const allowed = new Set([...required, "bank", "bank_id"]);
   for (const key of Object.keys(body)) {
     if (!allowed.has(key)) {
       errors[key] = "Field tidak dikenal";
     }
+  }
+
+  if (
+    body.bank !== undefined &&
+    body.bank !== null &&
+    body.bank !== "" &&
+    (typeof body.bank !== "string" ||
+      body.bank.trim().length < 2 ||
+      body.bank.trim().length > 50)
+  ) {
+    errors.bank = "Nama bank harus 2-50 karakter";
+  }
+
+  if (
+    body.bank_id !== undefined &&
+    body.bank_id !== null &&
+    body.bank_id !== "" &&
+    (!Number.isSafeInteger(Number(body.bank_id)) || Number(body.bank_id) < 1)
+  ) {
+    errors.bank_id = "bank_id tidak valid";
   }
 
   return errors;
@@ -89,6 +113,12 @@ const expenseIncludes = [
     attributes: ["id", "nama", "deskripsi", "status"],
   },
   {
+    model: Bank,
+    as: "bank_ref",
+    attributes: ["id", "nama", "no_rekening", "atas_nama", "status"],
+    required: false,
+  },
+  {
     model: User,
     as: "creator",
     attributes: ["id", "name", "email"],
@@ -96,7 +126,7 @@ const expenseIncludes = [
   },
 ];
 
-const pickExpenseFields = (body) => {
+const pickExpenseFields = async (body) => {
   const fields = {};
 
   for (const field of [
@@ -105,6 +135,8 @@ const pickExpenseFields = (body) => {
     "keterangan",
     "metode",
     "jumlah",
+    "bank",
+    "bank_id",
   ]) {
     if (Object.hasOwn(body, field)) {
       fields[field] = field === "keterangan" ? body[field].trim() : body[field];
@@ -113,6 +145,27 @@ const pickExpenseFields = (body) => {
 
   if (fields.category_id !== undefined) {
     fields.category_id = Number(fields.category_id);
+  }
+
+  if (fields.bank_id !== undefined && fields.bank_id !== "" && fields.bank_id !== null) {
+    fields.bank_id = Number(fields.bank_id);
+  } else if (fields.bank_id === "") {
+    fields.bank_id = null;
+  }
+
+  // Bersihkan bank_id bila bukan transfer_bank
+  if (fields.metode && fields.metode !== "transfer_bank") {
+    fields.bank = null;
+    fields.bank_id = null;
+  }
+
+  // Kompatibilitas: sinkron nama bank teks dari bank_id bila bank kosong
+  if (
+    fields.bank_id &&
+    (fields.bank === undefined || fields.bank === null || fields.bank === "")
+  ) {
+    const bankRow = await Bank.findByPk(fields.bank_id);
+    if (bankRow) fields.bank = bankRow.nama;
   }
 
   if (fields.jumlah !== undefined) {
@@ -301,8 +354,10 @@ export const createExpense = async (req, res) => {
       });
     }
 
+    const fields = await pickExpenseFields(req.body);
+
     const expense = await Expense.create({
-      ...pickExpenseFields(req.body),
+      ...fields,
       created_by: req.user.id,
     });
 
@@ -356,7 +411,8 @@ export const updateExpense = async (req, res) => {
       }
     }
 
-    await expense.update(pickExpenseFields(req.body));
+    const fields = await pickExpenseFields(req.body);
+    await expense.update(fields);
 
     const result = await Expense.findByPk(expense.id, {
       include: expenseIncludes,

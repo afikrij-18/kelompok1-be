@@ -45,6 +45,14 @@ const Expense = db.define(
       type: DataTypes.ENUM("cash", "transfer_bank", "qris"),
       allowNull: false,
     },
+    bank: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    bank_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     jumlah: {
       type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false,

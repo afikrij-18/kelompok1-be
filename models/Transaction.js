@@ -22,6 +22,10 @@ const Transaction = db.define(
       type: DataTypes.ENUM("cash", "transfer_bank", "qris"),
       allowNull: false,
     },
+    bank_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     amount_paid: {
       type: DataTypes.INTEGER,
       allowNull: false,

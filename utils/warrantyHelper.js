@@ -1,24 +1,21 @@
 import { BookingUnit, Service } from "../models/index.js";
 
-// Helper: terbitkan garansi saat booking completed
-// Set warranty_expiry_date = tanggal completed + service.warranty_days
+// Helper: terbitkan garansi saat LUNAS + SELESAI
+// Set warranty_expiry_date = startDate + service.warranty_days
 // Idempoten: skip unit yang sudah punya tanggal garansi
-export const issueWarrantyForBooking = async (bookingId, transaction = null) => {
-  const options = transaction ? { where: { booking_id: bookingId }, include: [{ model: Service, as: "service" }], transaction } : { where: { booking_id: bookingId }, include: [{ model: Service, as: "service" }] };
-  const units = await BookingUnit.findAll(options);
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
+export const issueWarrantyForBooking = async (bookingId, transaction = null, startDate = new Date()) => {
+  const opts = transaction ? { where: { booking_id: bookingId }, include: [{ model: Service, as: "service" }], transaction } : { where: { booking_id: bookingId }, include: [{ model: Service, as: "service" }] };
+  const units = await BookingUnit.findAll(opts);
+  const start = new Date(startDate);
+  start.setHours(0, 0, 0, 0);
   for (const unit of units) {
-    if (unit.warranty_expiry_date) continue; // idempoten
-    const days = unit.service?.warranty_days ?? 0;
+    if (unit.warranty_expiry_date) continue;
+    const days = Number(unit.service?.warranty_days) || 0;
     if (!days || days <= 0) continue;
-    const expiry = new Date(today);
-    expiry.setDate(expiry.getDate() + Number(days));
+    const expiry = new Date(start);
+    expiry.setDate(expiry.getDate() + days);
     await unit.update({ warranty_expiry_date: expiry.toISOString().slice(0, 10) }, transaction ? { transaction } : {});
   }
-
   return units.length;
 };
 
