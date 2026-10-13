@@ -18,6 +18,7 @@ const run = async () => {
     const users = [
       { name: "Admin Utama", email: "admin@example.com", password, phone: "081234567890", status: "active", role: "admin" },
       { name: "Owner Utama", email: "owner@example.com", password, phone: "081234567891", status: "active", role: "owner" },
+      { name: "Admin", email: "admin@gmail.com", password, phone: "081234567891", status: "active", role: "admin" },
     ];
 
     for (let i = 1; i <= 13; i++) {
