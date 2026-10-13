@@ -17,6 +17,7 @@ import expenseRoutes from "./routes/expenseRoutes.js";
 import expenseCategoryRoutes from "./routes/expenseCategoryRoutes.js";
 import bankRoutes from "./routes/bankRoutes.js";
 import warrantyRoutes from "./routes/warrantyRoutes.js";
+import publicRoutes from "./routes/publicRoutes.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/expenses", expenseRoutes);
 app.use("/api/expense-categories", expenseCategoryRoutes);
 app.use("/api/banks", bankRoutes);
 app.use("/api/warranties", warrantyRoutes);
+app.use("/api/public", publicRoutes);
 app.use("/api", bookingRoutes);
 
 app.get("/", (req, res) => {
