@@ -12,12 +12,10 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.use(authMiddleware, roleMiddleware);
-
-router.get("/", getExpenseCategories);
-router.get("/:id", getExpenseCategoryById);
-router.post("/", createExpenseCategory);
-router.put("/:id", updateExpenseCategory);
-router.delete("/:id", deleteExpenseCategory);
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getExpenseCategories);
+router.get("/:id", authMiddleware, roleMiddleware("admin", "owner"), getExpenseCategoryById);
+router.post("/", authMiddleware, roleMiddleware("owner"), createExpenseCategory);
+router.put("/:id", authMiddleware, roleMiddleware("owner"), updateExpenseCategory);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteExpenseCategory);
 
 export default router;

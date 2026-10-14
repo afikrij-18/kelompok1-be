@@ -35,6 +35,10 @@ const BookingService = db.define(
             allowNull: false,
             defaultValue: 0,
         },
+        customer_name_snapshot: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         notes: {
             type: DataTypes.TEXT,
             allowNull: true,
@@ -45,7 +49,7 @@ const BookingService = db.define(
         },
         created_by: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
     },
     {

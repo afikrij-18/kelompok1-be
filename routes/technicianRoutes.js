@@ -11,10 +11,11 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", authMiddleware, roleMiddleware, getTechnicians);
-router.get("/:id", authMiddleware, roleMiddleware, getTechnicianById);
-router.post("/", authMiddleware, roleMiddleware, createTechnician);
-router.put("/:id", authMiddleware, roleMiddleware, updateTechnician);
-router.delete("/:id", authMiddleware, roleMiddleware, deleteTechnician);
+// Admin: lihat, tambah, edit. Owner: full + hapus.
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getTechnicians);
+router.get("/:id", authMiddleware, roleMiddleware("admin", "owner"), getTechnicianById);
+router.post("/", authMiddleware, roleMiddleware("admin", "owner"), createTechnician);
+router.put("/:id", authMiddleware, roleMiddleware("admin", "owner"), updateTechnician);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteTechnician);
 
 export default router;

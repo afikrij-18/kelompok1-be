@@ -10,11 +10,10 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.use(authMiddleware, roleMiddleware);
-
-router.get("/", getBanks);
-router.post("/", createBank);
-router.put("/:id", updateBank);
-router.delete("/:id", deleteBank);
+// Admin butuh GET untuk dropdown pembayaran; mutasi hanya owner
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getBanks);
+router.post("/", authMiddleware, roleMiddleware("owner"), createBank);
+router.put("/:id", authMiddleware, roleMiddleware("owner"), updateBank);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteBank);
 
 export default router;

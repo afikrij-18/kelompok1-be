@@ -42,11 +42,10 @@ export const createPublicBooking = async (req, res) => {
       return res.status(400).json({ message: "Minimal harus ada 1 unit AC yang diservis" });
     }
 
-    // customer: cari by phone, update nama jika ada
+    // customer: cari by phone, jangan timpa nama lama — keep histori booking sebelumnya
     let existingCustomer = await Customer.findOne({ where: { phone: customer.phone }, transaction: t });
     let customerId;
     if (existingCustomer) {
-      await existingCustomer.update({ name: customer.name }, { transaction: t });
       customerId = existingCustomer.id;
     } else {
       const newCustomer = await Customer.create({ name: customer.name, phone: customer.phone }, { transaction: t });
@@ -84,7 +83,7 @@ export const createPublicBooking = async (req, res) => {
 
     const reg_no = generateRegNo();
     const newBooking = await BookingService.create(
-      { reg_no, customer_id: customerId, address_id: addressId, technician_id: null, booking_date, booking_time, status: "pending", total_price: calculatedTotalPrice, notes: notes || null, created_by: null },
+      { reg_no, customer_id: customerId, customer_name_snapshot: customer.name.trim(), address_id: addressId, technician_id: null, booking_date, booking_time, status: "pending", total_price: calculatedTotalPrice, notes: notes || null, created_by: null },
       { transaction: t }
     );
 

@@ -12,13 +12,10 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-// Semua endpoint membutuhkan login dan role admin/owner.
-router.use(authMiddleware, roleMiddleware);
-
-router.get("/", getExpenses);
-router.get("/:id", getExpenseById);
-router.post("/", createExpense);
-router.put("/:id", updateExpense);
-router.delete("/:id", deleteExpense);
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getExpenses);
+router.get("/:id", authMiddleware, roleMiddleware("admin", "owner"), getExpenseById);
+router.post("/", authMiddleware, roleMiddleware("admin", "owner"), createExpense);
+router.put("/:id", authMiddleware, roleMiddleware("owner"), updateExpense);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteExpense);
 
 export default router;

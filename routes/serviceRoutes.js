@@ -17,8 +17,8 @@ router.get("/", getServices);
 router.get("/:id", getServiceById);
 
 // Route Terproteksi (Hanya Admin & Owner yang sudah login)
-router.post("/", authMiddleware, roleMiddleware, createService);
-router.put("/:id", authMiddleware, roleMiddleware, updateService);
-router.delete("/:id", authMiddleware, roleMiddleware, deleteService);
+router.post("/", authMiddleware, roleMiddleware("admin", "owner"), createService);
+router.put("/:id", authMiddleware, roleMiddleware("admin", "owner"), updateService);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteService);
 
 export default router;

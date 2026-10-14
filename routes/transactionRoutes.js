@@ -12,11 +12,11 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/report", authMiddleware, roleMiddleware, getFinancialReport);
-router.get("/", authMiddleware, roleMiddleware, getTransactions);
-router.get("/:id", authMiddleware, roleMiddleware, getTransactionById);
-router.post("/", authMiddleware, roleMiddleware, createTransaction);
-router.put("/:id", authMiddleware, roleMiddleware, updateTransaction);
-router.delete("/:id", authMiddleware, roleMiddleware, deleteTransaction);
+router.get("/report", authMiddleware, roleMiddleware("admin", "owner"), getFinancialReport);
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getTransactions);
+router.get("/:id", authMiddleware, roleMiddleware("admin", "owner"), getTransactionById);
+router.post("/", authMiddleware, roleMiddleware("admin", "owner"), createTransaction);
+router.put("/:id", authMiddleware, roleMiddleware("owner"), updateTransaction);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteTransaction);
 
 export default router;

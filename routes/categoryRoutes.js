@@ -11,11 +11,11 @@ import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", authMiddleware, roleMiddleware, getCategories);
-router.get("/:id", authMiddleware, roleMiddleware, getCategoryById);
-router.post("/", authMiddleware, roleMiddleware, createCategory);
-router.put("/:id", authMiddleware, roleMiddleware, updateCategory);
-router.patch("/:id", authMiddleware, roleMiddleware, updateCategory);
-router.delete("/:id", authMiddleware, roleMiddleware, deleteCategory);
+router.get("/", authMiddleware, roleMiddleware("admin", "owner"), getCategories);
+router.get("/:id", authMiddleware, roleMiddleware("admin", "owner"), getCategoryById);
+router.post("/", authMiddleware, roleMiddleware("owner"), createCategory);
+router.put("/:id", authMiddleware, roleMiddleware("owner"), updateCategory);
+router.patch("/:id", authMiddleware, roleMiddleware("owner"), updateCategory);
+router.delete("/:id", authMiddleware, roleMiddleware("owner"), deleteCategory);
 
 export default router;
