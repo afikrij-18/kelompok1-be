@@ -113,12 +113,12 @@ export const createPublicBooking = async (req, res) => {
   }
 };
 
-// GET /public/bookings/status?reg_no=&phone= — cek status booking oleh pelanggan
+// GET /public/bookings/status?reg_no= — cek status booking oleh pelanggan
 export const getPublicBookingStatus = async (req, res) => {
   try {
-    const { reg_no, phone } = req.query;
-    if (!reg_no || !phone) {
-      return res.status(400).json({ message: "reg_no dan phone wajib diisi" });
+    const { reg_no } = req.query;
+    if (!reg_no) {
+      return res.status(400).json({ message: "reg_no wajib diisi" });
     }
 
     const booking = await BookingService.findOne({
@@ -133,12 +133,6 @@ export const getPublicBookingStatus = async (req, res) => {
     });
 
     if (!booking) {
-      return res.status(404).json({ message: "Booking tidak ditemukan" });
-    }
-
-    const phoneBersih = String(phone).replace(/[\s-]/g, "");
-    const phoneCustomer = String(booking.customer?.phone || "").replace(/[\s-]/g, "");
-    if (phoneBersih !== phoneCustomer) {
       return res.status(404).json({ message: "Booking tidak ditemukan" });
     }
 
