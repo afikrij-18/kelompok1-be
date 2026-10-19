@@ -1,10 +1,10 @@
-import { db, Expense, ExpenseCategory, User } from "../models/index.js";
+import { db, Expense, ExpenseCategory, User, Bank } from "../models/index.js";
 
 const seedExpenses = async () => {
   try {
     await db.authenticate();
 
-    const user = await User.findByPk(1);
+    const user = await User.findOne();
 
     if (!user) {
       throw new Error("User ID 1 tidak ditemukan");
@@ -30,6 +30,7 @@ const seedExpenses = async () => {
         category: "Listrik",
         keterangan: "Pembayaran tagihan listrik",
         metode: "transfer_bank",
+        bank_name: "BCA",
         jumlah: "350000",
       },
       {
@@ -57,6 +58,8 @@ const seedExpenses = async () => {
         );
       }
 
+      const bankRef = item.bank_name ? await Bank.findOne({ where: { nama: item.bank_name } }) : null;
+
       const [, wasCreated] = await Expense.findOrCreate({
         where: {
           tanggal: item.tanggal,
@@ -68,6 +71,8 @@ const seedExpenses = async () => {
           category_id: category.id,
           keterangan: item.keterangan,
           metode: item.metode,
+          bank: bankRef ? bankRef.nama : null,
+          bank_id: bankRef ? bankRef.id : null,
           jumlah: item.jumlah,
           created_by: user.id,
         },

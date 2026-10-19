@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/auth.js";
 
 const authMiddleware = (req, res, next) => {
   try {
@@ -20,7 +21,7 @@ const authMiddleware = (req, res, next) => {
 
     const token = parts[1];
 
-    const decoded = jwt.verify(token, "kelompok1_secret_key");
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     req.user = decoded;
 

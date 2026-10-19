@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import db from "./config/database.js";
@@ -45,16 +46,25 @@ app.get("/", (req, res) => {
   });
 });
 
-const PORT = 5000;
+const PORT = Number(process.env.PORT) || 5000;
 
 const startServer = async () => {
   try {
     await db.authenticate();
     console.log("Database berhasil terhubung");
 
-    // Sinkronisasi database
-    await db.sync();
-    console.log("Table berhasil dibuat/disinkronisasi");
+    // Sinkronisasi database.
+    // default : membuat tabel yang belum ada (tidak mengubah tabel yang sudah ada)
+    // DB_SYNC_ALTER=true : db.sync({ alter: true }) -> pada SQLite tabel di-recreate,
+    //                       sehingga data pada tabel yang berubah akan hilang.
+    const shouldAlter = process.env.DB_SYNC_ALTER === "true";
+
+    await db.sync(shouldAlter ? { alter: true } : {});
+    console.log(
+      shouldAlter
+        ? "Table berhasil disinkronisasi (alter mode)"
+        : "Table berhasil dibuat/disinkronisasi",
+    );
 
     app.listen(PORT, () => {
       console.log(`Server berjalan di http://localhost:${PORT}`);

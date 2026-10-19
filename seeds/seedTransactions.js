@@ -1,5 +1,5 @@
 import db from "../config/database.js";
-import { BookingService, Transaction, User } from "../models/index.js";
+import { BookingService, Transaction, User, Bank } from "../models/index.js";
 
 const run = async () => {
   try {
@@ -12,8 +12,10 @@ const run = async () => {
       process.exit(0);
     }
 
-    const booking = await BookingService.findOne();
+    // Ambil booking pertama yang confirmed
+    const booking = await BookingService.findOne({ where: { status: "confirmed" } }) || await BookingService.findOne();
     const admin = await User.findOne({ where: { role: "admin" } });
+    const bank = await Bank.findOne();
 
     if (!booking) {
       console.log("[transactions] seed bookings first");
@@ -24,6 +26,7 @@ const run = async () => {
       booking_id: booking.id,
       invoice_no: `INV-${new Date().toISOString().slice(0, 7).replace("-", "")}-1001`,
       payment_method: "cash",
+      bank_id: bank ? bank.id : null,
       amount_paid: booking.total_price,
       payment_status: "paid",
       payment_date: new Date(),

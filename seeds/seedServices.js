@@ -1,5 +1,5 @@
 import db from "../config/database.js";
-import { Service } from "../models/index.js";
+import { Service, Category } from "../models/index.js";
 
 const run = async () => {
   try {
@@ -12,13 +12,20 @@ const run = async () => {
       process.exit(0);
     }
 
+    const categories = await Category.findAll();
+    if (categories.length === 0) {
+      console.error("[services] seed categories first!");
+      process.exit(1);
+    }
+
     const services = [];
     for (let i = 1; i <= 15; i++) {
+      const category = categories[(i - 1) % categories.length];
       services.push({
         name: `Service Premium ${i}`,
         description: `Deskripsi layanan berkualitas ${i}`,
         price: 50000 + (i * 10000),
-        category_id: (i % 15) + 1,
+        category_id: category.id,
         warranty_days: (i % 30) + 1,
       });
     }

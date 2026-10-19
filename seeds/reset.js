@@ -7,7 +7,6 @@ const tablesInReverse = [
   "transactions",
   "expenses",
   "expense_categories",
-  "warranties",
   "warranty_claims",
   "banks",
   "booking_units",

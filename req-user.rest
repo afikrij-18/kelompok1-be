@@ -42,7 +42,7 @@ Content-Type: application/json
 "password": "password123",
 "phone": "081234567890",
 "status": "active",
-"role": "technician"
+"role": "admin"
 }
 
 ###========================================
@@ -57,7 +57,7 @@ Content-Type: application/json
 "name": "Teknisi SejukPro Updated",
 "phone": "081298765432",
 "status": "active",
-"role": "technician"
+"role": "admin"
 }
 
 ###========================================

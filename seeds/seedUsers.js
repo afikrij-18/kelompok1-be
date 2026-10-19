@@ -13,15 +13,18 @@ const run = async () => {
       process.exit(0);
     }
 
-    const password = await bcrypt.hash("password123", 10);
+    // Menggunakan bcrypt cost 12 (sesuai app, sebelumnya di seeder cost 10)
+    const rawPassword = process.env.SEED_PASSWORD || "admin123";
+    const password = await bcrypt.hash(rawPassword, 12);
 
     const users = [
       { name: "Admin Utama", email: "admin@example.com", password, phone: "081234567890", status: "active", role: "admin" },
       { name: "Owner Utama", email: "owner@example.com", password, phone: "081234567891", status: "active", role: "owner" },
-      { name: "Admin", email: "admin@gmail.com", password, phone: "081234567891", status: "active", role: "admin" },
+      { name: "Admin UMKM", email: "admin.umkm@gmail.com", password, phone: "081234567892", status: "active", role: "admin" },
+      { name: "Admin Lama", email: "admin@gmail.com", password, phone: "081234567893", status: "active", role: "admin" },
     ];
 
-    for (let i = 1; i <= 13; i++) {
+    for (let i = 1; i <= 11; i++) {
       users.push({
         name: `Admin Dummy ${i}`,
         email: `admin${i}@example.com`,
@@ -34,7 +37,7 @@ const run = async () => {
 
     await User.bulkCreate(users);
 
-    console.log("[users] seeded 15 rows");
+    console.log(`[users] seeded 15 rows (password: ${rawPassword})`);
     process.exit(0);
   } catch (err) {
     console.error("[users] failed:", err.message);

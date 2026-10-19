@@ -15,6 +15,17 @@ dist
 dist-ssr
 *.local
 
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database SQLite (lokal — regenerate ulang dengan `npm run db:reset`)
+database/database.sqlite
+*.sqlite
+*.sqlite3
+*.db
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

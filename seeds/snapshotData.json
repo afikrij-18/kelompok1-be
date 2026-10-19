@@ -1,0 +1,1052 @@
+{
+  "users": [
+    {
+      "id": 107,
+      "name": "Admin Utama",
+      "email": "admin@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081234567890",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 108,
+      "name": "Owner Utama",
+      "email": "owner@example.com",
+      "password": "$2b$12$EfHQk9GerhGPMIuKB3NhJOPJ62HiFIo5xQ/tOvm3qz3omiTWk9gW.",
+      "phone": "081234567891",
+      "status": "active",
+      "role": "owner",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 21:37:23.155 +00:00"
+    },
+    {
+      "id": 109,
+      "name": "Admin UMKM",
+      "email": "admin.umkm@gmail.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081234567892",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 110,
+      "name": "Admin Lama",
+      "email": "admin@gmail.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081234567893",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 111,
+      "name": "Admin Dummy 1",
+      "email": "admin1@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000001",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 112,
+      "name": "Admin Dummy 2",
+      "email": "admin2@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000002",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 113,
+      "name": "Admin Dummy 3",
+      "email": "admin3@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000003",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 114,
+      "name": "Admin Dummy 4",
+      "email": "admin4@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000004",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 115,
+      "name": "Admin Dummy 5",
+      "email": "admin5@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000005",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 116,
+      "name": "Admin Dummy 6",
+      "email": "admin6@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000006",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 117,
+      "name": "Admin Dummy 7",
+      "email": "admin7@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000007",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 118,
+      "name": "Admin Dummy 8",
+      "email": "admin8@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000008",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 119,
+      "name": "Admin Dummy 9",
+      "email": "admin9@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000009",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 120,
+      "name": "Admin Dummy 10",
+      "email": "admin10@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000010",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    },
+    {
+      "id": 121,
+      "name": "Admin Dummy 11",
+      "email": "admin11@example.com",
+      "password": "$2b$12$CUrH6qMsVOE0GJt5wr6nI.AkR15JvOJn/u5YwexWawpkp.1rDYQsO",
+      "phone": "081200000011",
+      "status": "active",
+      "role": "admin",
+      "createdAt": "2026-10-19 20:54:45.350 +00:00",
+      "updatedAt": "2026-10-19 20:54:45.350 +00:00"
+    }
+  ],
+  "technicians": [
+    {
+      "id": 114,
+      "name": "Budi",
+      "phone": "081234567809",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:06.167 +00:00"
+    },
+    {
+      "id": 115,
+      "name": "Rafli",
+      "phone": "081234567810",
+      "status": "inactive",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:14.723 +00:00"
+    },
+    {
+      "id": 116,
+      "name": "Andi",
+      "phone": "081234567811",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:23.543 +00:00"
+    },
+    {
+      "id": 117,
+      "name": "Charlie",
+      "phone": "081234567812",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:31.467 +00:00"
+    },
+    {
+      "id": 118,
+      "name": "Daryl",
+      "phone": "081234567813",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:45.828 +00:00"
+    },
+    {
+      "id": 119,
+      "name": "Eko",
+      "phone": "081234567814",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:24:56.223 +00:00"
+    },
+    {
+      "id": 120,
+      "name": "Fadhil",
+      "phone": "081234567815",
+      "status": "inactive",
+      "createdAt": "2026-10-19 20:54:46.515 +00:00",
+      "updatedAt": "2026-10-19 21:25:04.018 +00:00"
+    }
+  ],
+  "categories": [
+    {
+      "id": 121,
+      "name": "Service AC",
+      "createdAt": "2026-10-19 21:14:41.248 +00:00",
+      "updatedAt": "2026-10-19 21:14:41.248 +00:00"
+    },
+    {
+      "id": 122,
+      "name": "Installasi",
+      "createdAt": "2026-10-19 21:16:12.936 +00:00",
+      "updatedAt": "2026-10-19 21:16:12.936 +00:00"
+    },
+    {
+      "id": 123,
+      "name": "Perbaikan",
+      "createdAt": "2026-10-19 21:16:16.412 +00:00",
+      "updatedAt": "2026-10-19 21:16:16.412 +00:00"
+    }
+  ],
+  "services": [
+    {
+      "id": 91,
+      "name": "Service AC Biasa",
+      "description": "Service AC Biasa tanpa membongkar secara keseluruhan",
+      "price": 90000,
+      "category_id": 121,
+      "warranty_days": 7,
+      "createdAt": "2026-10-19 21:15:17.581 +00:00",
+      "updatedAt": "2026-10-19 21:15:17.581 +00:00"
+    },
+    {
+      "id": 92,
+      "name": "Service AC Extra",
+      "description": "Service AC dan membersihkan secara keseluruhan",
+      "price": 180000,
+      "category_id": 121,
+      "warranty_days": 7,
+      "createdAt": "2026-10-19 21:15:52.670 +00:00",
+      "updatedAt": "2026-10-19 21:15:52.670 +00:00"
+    },
+    {
+      "id": 93,
+      "name": "Bongkar AC",
+      "description": "Hanya Membongkar unit AC, tanpa memasangnya lagi.",
+      "price": 100,
+      "category_id": 122,
+      "warranty_days": 7,
+      "createdAt": "2026-10-19 21:17:20.680 +00:00",
+      "updatedAt": "2026-10-19 21:17:20.680 +00:00"
+    },
+    {
+      "id": 94,
+      "name": "Pasang AC",
+      "description": "Memasang unit AC (unit lama atau baru). belum termasuk harga sparepart (misal: pipa AC, selang pembuangan, kabel sumber, kabel outdoor, dll)",
+      "price": 150,
+      "category_id": 122,
+      "warranty_days": 30,
+      "createdAt": "2026-10-19 21:18:55.814 +00:00",
+      "updatedAt": "2026-10-19 21:18:55.814 +00:00"
+    },
+    {
+      "id": 95,
+      "name": "Bongkar Pasang AC",
+      "description": "Bongkar dan Pasang AC. belum termasuk harga sparepart (misal: pipa AC, selang pembuangan, kabel sumber, kabel outdoor, dll)",
+      "price": 250000,
+      "category_id": 122,
+      "warranty_days": 30,
+      "createdAt": "2026-10-19 21:20:04.895 +00:00",
+      "updatedAt": "2026-10-19 21:20:04.895 +00:00"
+    },
+    {
+      "id": 96,
+      "name": "Kapasitor Kompressor",
+      "description": "Perbaikan pada kapasitor untuk kompressor, (penggantian sparepart baru)",
+      "price": 275000,
+      "category_id": 123,
+      "warranty_days": 30,
+      "createdAt": "2026-10-19 21:21:42.357 +00:00",
+      "updatedAt": "2026-10-19 21:21:42.357 +00:00"
+    },
+    {
+      "id": 97,
+      "name": "Motor Swing Indoor",
+      "description": "Perbaikan motor swing indoor yang rusak (penggantian sparepart)",
+      "price": 150,
+      "category_id": 123,
+      "warranty_days": 30,
+      "createdAt": "2026-10-19 21:22:53.615 +00:00",
+      "updatedAt": "2026-10-19 21:22:53.615 +00:00"
+    }
+  ],
+  "customers": [
+    {
+      "id": 91,
+      "name": "Pelanggan 1",
+      "phone": "081234567901",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 92,
+      "name": "Pelanggan 2",
+      "phone": "081234567902",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 93,
+      "name": "Pelanggan 3",
+      "phone": "081234567903",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 94,
+      "name": "Pelanggan 4",
+      "phone": "081234567904",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 95,
+      "name": "Pelanggan 5",
+      "phone": "081234567905",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 96,
+      "name": "Pelanggan 6",
+      "phone": "081234567906",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 97,
+      "name": "Pelanggan 7",
+      "phone": "081234567907",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 98,
+      "name": "Pelanggan 8",
+      "phone": "081234567908",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 99,
+      "name": "Pelanggan 9",
+      "phone": "081234567909",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 100,
+      "name": "Pelanggan 10",
+      "phone": "081234567910",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 101,
+      "name": "Pelanggan 11",
+      "phone": "081234567911",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 102,
+      "name": "Pelanggan 12",
+      "phone": "081234567912",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 103,
+      "name": "Pelanggan 13",
+      "phone": "081234567913",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 104,
+      "name": "Pelanggan 14",
+      "phone": "081234567914",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 105,
+      "name": "Pelanggan 15",
+      "phone": "081234567915",
+      "createdAt": "2026-10-19 20:54:51.955 +00:00",
+      "updatedAt": "2026-10-19 20:54:51.955 +00:00"
+    },
+    {
+      "id": 106,
+      "name": "Customer Test",
+      "phone": "08999999999",
+      "createdAt": "2026-10-19 20:54:53.079 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.079 +00:00"
+    },
+    {
+      "id": 107,
+      "name": "Rizky Pratama",
+      "phone": "081122334455",
+      "createdAt": "2026-10-19 20:54:53.273 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.273 +00:00"
+    },
+    {
+      "id": 108,
+      "name": "Dewi Lestari",
+      "phone": "085288990011",
+      "createdAt": "2026-10-19 20:54:53.493 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.493 +00:00"
+    },
+    {
+      "id": 109,
+      "name": "Hendra Wijaya",
+      "phone": "081377665544",
+      "createdAt": "2026-10-19 20:54:53.570 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.570 +00:00"
+    },
+    {
+      "id": 110,
+      "name": "Maya Indah",
+      "phone": "082299887766",
+      "createdAt": "2026-10-19 20:54:53.682 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.682 +00:00"
+    },
+    {
+      "id": 111,
+      "name": "Heri",
+      "phone": "08123123123",
+      "createdAt": "2026-10-19 21:26:48.588 +00:00",
+      "updatedAt": "2026-10-19 21:26:48.588 +00:00"
+    },
+    {
+      "id": 112,
+      "name": "Felix",
+      "phone": "0876544321",
+      "createdAt": "2026-10-19 21:30:12.453 +00:00",
+      "updatedAt": "2026-10-19 21:30:12.453 +00:00"
+    }
+  ],
+  "customer_addresses": [
+    {
+      "id": 94,
+      "customer_id": 91,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 1, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 1",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 95,
+      "customer_id": 92,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 2, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 2",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 96,
+      "customer_id": 93,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 3, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 3",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 97,
+      "customer_id": 94,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 4, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 4",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 98,
+      "customer_id": 95,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 5, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 5",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 99,
+      "customer_id": 96,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 6, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 6",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 100,
+      "customer_id": 97,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 7, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 7",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 101,
+      "customer_id": 98,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 8, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 8",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 102,
+      "customer_id": 99,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 9, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 9",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 103,
+      "customer_id": 100,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 10, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 10",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 104,
+      "customer_id": 101,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 11, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 11",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 105,
+      "customer_id": 102,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 12, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 12",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 106,
+      "customer_id": 103,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 13, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 13",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 107,
+      "customer_id": 104,
+      "label": "Kantor",
+      "address": "Jl. Contoh No. 14, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 14",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 108,
+      "customer_id": 105,
+      "label": "Rumah",
+      "address": "Jl. Contoh No. 15, Kota Jakarta",
+      "notes_location": "Patokan dekat gedung 15",
+      "createdAt": "2026-10-19 20:54:52.043 +00:00",
+      "updatedAt": "2026-10-19 20:54:52.043 +00:00"
+    },
+    {
+      "id": 109,
+      "customer_id": 106,
+      "label": "Rumah Utama",
+      "address": "Jl. Testing No. 1, Padang",
+      "notes_location": "Cat rumah warna oranye dekat tiang listrik",
+      "createdAt": "2026-10-19 20:54:53.138 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.138 +00:00"
+    },
+    {
+      "id": 110,
+      "customer_id": 107,
+      "label": "Rumah Utama",
+      "address": "Jl. M. Hatta No. 12, Padang",
+      "notes_location": "Cat pagar hitam, dekat warung kelontong",
+      "createdAt": "2026-10-19 20:54:53.280 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.280 +00:00"
+    },
+    {
+      "id": 111,
+      "customer_id": 107,
+      "label": "Kantor Cabang",
+      "address": "Jl. Sudirman No. 88, Padang",
+      "notes_location": "Lantai 2 ruang manajer",
+      "createdAt": "2026-10-19 20:54:53.374 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.374 +00:00"
+    },
+    {
+      "id": 112,
+      "customer_id": 108,
+      "label": "Kontrakan",
+      "address": "Jl. Khatib Sulaiman Blok C No. 5, Padang",
+      "notes_location": "Masuk lewat gerbang samping",
+      "createdAt": "2026-10-19 20:54:53.498 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.498 +00:00"
+    },
+    {
+      "id": 113,
+      "customer_id": 109,
+      "label": "Rumah Orang Tua",
+      "address": "Jl. Veteran No. 101, Padang",
+      "notes_location": "Rumah cat putih berlantai dua",
+      "createdAt": "2026-10-19 20:54:53.574 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.574 +00:00"
+    },
+    {
+      "id": 114,
+      "customer_id": 110,
+      "label": "Toko Butik",
+      "address": "Jl. Permindo No. 14, Pasar Raya, Padang",
+      "notes_location": "Deretan toko baju lantai dasar",
+      "createdAt": "2026-10-19 20:54:53.687 +00:00",
+      "updatedAt": "2026-10-19 20:54:53.687 +00:00"
+    },
+    {
+      "id": 115,
+      "customer_id": 111,
+      "label": "rumah putih",
+      "address": "Jl. jalan jalan. no 1, rt 1, rw  1, gang pertama",
+      "notes_location": null,
+      "createdAt": "2026-10-19 21:26:50.283 +00:00",
+      "updatedAt": "2026-10-19 21:26:50.283 +00:00"
+    },
+    {
+      "id": 116,
+      "customer_id": 112,
+      "label": "Alamat Utama",
+      "address": "Jalan anggrek, no 20, gang kelinci",
+      "notes_location": null,
+      "createdAt": "2026-10-19 21:30:14.175 +00:00",
+      "updatedAt": "2026-10-19 21:30:14.175 +00:00"
+    }
+  ],
+  "booking_services": [
+    {
+      "id": 26,
+      "reg_no": "BK-20261019-7455",
+      "status": "completed",
+      "customer_id": 111,
+      "booking_date": "2026-10-21",
+      "booking_time": "10:00:00",
+      "total_price": 250000,
+      "customer_name_snapshot": "Heri",
+      "notes": null,
+      "technician_id": 114,
+      "created_by": null,
+      "createdAt": "2026-10-19 21:26:50.299 +00:00",
+      "updatedAt": "2026-10-19 21:27:36.791 +00:00",
+      "address_id": 115
+    },
+    {
+      "id": 27,
+      "reg_no": "BK-20261019-1549",
+      "status": "confirmed",
+      "customer_id": 112,
+      "booking_date": "2026-10-20",
+      "booking_time": "09:00:00",
+      "total_price": 90000,
+      "customer_name_snapshot": null,
+      "notes": null,
+      "technician_id": 116,
+      "created_by": 108,
+      "createdAt": "2026-10-19 21:30:14.184 +00:00",
+      "updatedAt": "2026-10-19 21:30:14.184 +00:00",
+      "address_id": 116
+    }
+  ],
+  "booking_units": [
+    {
+      "id": 41,
+      "brand_ac": "Panasonic",
+      "type_ac": "Split Wall",
+      "pk": "1",
+      "lokasi": "Kamar anak",
+      "keluhan": null,
+      "price": 250000,
+      "booking_id": 26,
+      "service_id": 95,
+      "warranty_expiry_date": "2026-11-18",
+      "createdAt": "2026-10-19 21:27:36.802 +00:00",
+      "updatedAt": "2026-10-19 21:27:36.817 +00:00"
+    },
+    {
+      "id": 43,
+      "brand_ac": "Daikin",
+      "type_ac": "Split Wall",
+      "pk": "1",
+      "lokasi": "kamar depan",
+      "keluhan": null,
+      "price": 90000,
+      "booking_id": 27,
+      "service_id": 91,
+      "warranty_expiry_date": null,
+      "createdAt": "2026-10-19 21:30:14.385 +00:00",
+      "updatedAt": "2026-10-19 21:30:14.385 +00:00"
+    }
+  ],
+  "banks": [
+    {
+      "id": 17,
+      "nama": "BCA",
+      "no_rekening": "1234567890",
+      "atas_nama": "CV Service AC Sumbar",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:50.882 +00:00",
+      "updatedAt": "2026-10-19 21:37:49.588 +00:00"
+    },
+    {
+      "id": 18,
+      "nama": "Mandiri",
+      "no_rekening": "0987654321",
+      "atas_nama": "CV Service AC Sumbar",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:50.882 +00:00",
+      "updatedAt": "2026-10-19 21:38:08.369 +00:00"
+    },
+    {
+      "id": 19,
+      "nama": "BRI",
+      "no_rekening": "1122334455",
+      "atas_nama": "CV Service AC Sumbar",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:50.882 +00:00",
+      "updatedAt": "2026-10-19 21:37:58.536 +00:00"
+    },
+    {
+      "id": 20,
+      "nama": "QRIS",
+      "no_rekening": "QRIS-MAIN",
+      "atas_nama": "CV Service AC Sumbar",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:50.882 +00:00",
+      "updatedAt": "2026-10-19 21:38:21.735 +00:00"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 6,
+      "booking_id": 26,
+      "invoice_no": "INV-202610-3186",
+      "payment_method": "cash",
+      "bank_id": null,
+      "amount_paid": 250000,
+      "payment_status": "paid",
+      "payment_date": "2026-10-19 21:27:27.255 +00:00",
+      "notes": null,
+      "created_by": 108,
+      "createdAt": "2026-10-19 21:27:27.257 +00:00",
+      "updatedAt": "2026-10-19 21:27:27.257 +00:00"
+    }
+  ],
+  "warranty_claims": [],
+  "products": [
+    {
+      "id": 76,
+      "name": "Produk Sparepart 1",
+      "description": "Deskripsi komponen kualitas tinggi 1",
+      "price": 55000,
+      "stock": 12,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 77,
+      "name": "Produk Sparepart 2",
+      "description": "Deskripsi komponen kualitas tinggi 2",
+      "price": 60000,
+      "stock": 14,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 78,
+      "name": "Produk Sparepart 3",
+      "description": "Deskripsi komponen kualitas tinggi 3",
+      "price": 65000,
+      "stock": 16,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 79,
+      "name": "Produk Sparepart 4",
+      "description": "Deskripsi komponen kualitas tinggi 4",
+      "price": 70000,
+      "stock": 18,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 80,
+      "name": "Produk Sparepart 5",
+      "description": "Deskripsi komponen kualitas tinggi 5",
+      "price": 75000,
+      "stock": 20,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 81,
+      "name": "Produk Sparepart 6",
+      "description": "Deskripsi komponen kualitas tinggi 6",
+      "price": 80000,
+      "stock": 22,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 82,
+      "name": "Produk Sparepart 7",
+      "description": "Deskripsi komponen kualitas tinggi 7",
+      "price": 85000,
+      "stock": 24,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 83,
+      "name": "Produk Sparepart 8",
+      "description": "Deskripsi komponen kualitas tinggi 8",
+      "price": 90000,
+      "stock": 26,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 84,
+      "name": "Produk Sparepart 9",
+      "description": "Deskripsi komponen kualitas tinggi 9",
+      "price": 95000,
+      "stock": 28,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 85,
+      "name": "Produk Sparepart 10",
+      "description": "Deskripsi komponen kualitas tinggi 10",
+      "price": 100000,
+      "stock": 30,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 86,
+      "name": "Produk Sparepart 11",
+      "description": "Deskripsi komponen kualitas tinggi 11",
+      "price": 105000,
+      "stock": 32,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 87,
+      "name": "Produk Sparepart 12",
+      "description": "Deskripsi komponen kualitas tinggi 12",
+      "price": 110000,
+      "stock": 34,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 88,
+      "name": "Produk Sparepart 13",
+      "description": "Deskripsi komponen kualitas tinggi 13",
+      "price": 115000,
+      "stock": 36,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 89,
+      "name": "Produk Sparepart 14",
+      "description": "Deskripsi komponen kualitas tinggi 14",
+      "price": 120000,
+      "stock": 38,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    },
+    {
+      "id": 90,
+      "name": "Produk Sparepart 15",
+      "description": "Deskripsi komponen kualitas tinggi 15",
+      "price": 125000,
+      "stock": 40,
+      "createdAt": "2026-10-19 20:54:49.859 +00:00",
+      "updatedAt": "2026-10-19 20:54:49.859 +00:00"
+    }
+  ],
+  "expense_categories": [
+    {
+      "id": 29,
+      "nama": "Operasional",
+      "deskripsi": "Biaya operasional usaha",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.286 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.286 +00:00"
+    },
+    {
+      "id": 30,
+      "nama": "Transportasi",
+      "deskripsi": "Biaya bensin, parkir, dan perjalanan",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.370 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.370 +00:00"
+    },
+    {
+      "id": 31,
+      "nama": "Listrik",
+      "deskripsi": "Tagihan listrik tempat usaha",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.448 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.448 +00:00"
+    },
+    {
+      "id": 32,
+      "nama": "Peralatan",
+      "deskripsi": "Pembelian dan penggantian peralatan",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.524 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.524 +00:00"
+    },
+    {
+      "id": 33,
+      "nama": "Konsumsi",
+      "deskripsi": "Konsumsi karyawan dan teknisi",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.602 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.602 +00:00"
+    },
+    {
+      "id": 34,
+      "nama": "Internet",
+      "deskripsi": "Biaya internet dan komunikasi",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.678 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.678 +00:00"
+    },
+    {
+      "id": 35,
+      "nama": "Perawatan",
+      "deskripsi": "Perawatan aset dan peralatan usaha",
+      "status": "active",
+      "createdAt": "2026-10-19 20:54:56.767 +00:00",
+      "updatedAt": "2026-10-19 20:54:56.767 +00:00"
+    }
+  ],
+  "expenses": [
+    {
+      "id": 13,
+      "tanggal": "2026-10-01",
+      "category_id": 29,
+      "keterangan": "Pembelian alat kebersihan",
+      "metode": "cash",
+      "bank": null,
+      "bank_id": null,
+      "jumlah": 75000,
+      "created_by": 107,
+      "createdAt": "2026-10-19 20:54:57.799 +00:00",
+      "updatedAt": "2026-10-19 20:54:57.799 +00:00"
+    },
+    {
+      "id": 14,
+      "tanggal": "2026-10-03",
+      "category_id": 30,
+      "keterangan": "Bensin kendaraan operasional",
+      "metode": "cash",
+      "bank": null,
+      "bank_id": null,
+      "jumlah": 100000,
+      "created_by": 107,
+      "createdAt": "2026-10-19 20:54:57.904 +00:00",
+      "updatedAt": "2026-10-19 20:54:57.904 +00:00"
+    },
+    {
+      "id": 15,
+      "tanggal": "2026-10-05",
+      "category_id": 31,
+      "keterangan": "Pembayaran tagihan listrik",
+      "metode": "transfer_bank",
+      "bank": "BCA",
+      "bank_id": 17,
+      "jumlah": 350000,
+      "created_by": 107,
+      "createdAt": "2026-10-19 20:54:57.992 +00:00",
+      "updatedAt": "2026-10-19 20:54:57.992 +00:00"
+    },
+    {
+      "id": 16,
+      "tanggal": "2026-10-08",
+      "category_id": 32,
+      "keterangan": "Pembelian peralatan kerja",
+      "metode": "qris",
+      "bank": null,
+      "bank_id": null,
+      "jumlah": 150000,
+      "created_by": 107,
+      "createdAt": "2026-10-19 20:54:58.078 +00:00",
+      "updatedAt": "2026-10-19 20:54:58.078 +00:00"
+    }
+  ]
+}

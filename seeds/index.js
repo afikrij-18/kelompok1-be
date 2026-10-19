@@ -6,6 +6,7 @@ const seeders = [
   "seedCategories.js",
   "seedServices.js",
   "seedProducts.js",
+  "seedBanks.js",
   "seedCustomers.js",
   "seedBookings.js",
   "seedTransactions.js",

@@ -13,12 +13,15 @@
     "seed:categories": "node seeds/seedCategories.js",
     "seed:services": "node seeds/seedServices.js",
     "seed:products": "node seeds/seedProducts.js",
+    "seed:banks": "node seeds/seedBanks.js",
     "seed:customers": "node seeds/seedCustomers.js",
     "seed:bookings": "node seeds/seedBookings.js",
     "seed:transactions": "node seeds/seedTransactions.js",
     "seed:expense-categories": "node seeds/seedExpenseCategories.js",
     "seed:expenses": "node seeds/seedExpenses.js",
-    "seed:warranties": "node seeds/seedWarranties.js"
+    "seed:warranties": "node seeds/seedWarranties.js",
+    "seed:master": "node seeds/seedMaster.js",
+    "db:sync:alter": "node -e \"process.env.DB_SYNC_ALTER='true'; import('./index.js')\""
   },
   "repository": {
     "type": "git",

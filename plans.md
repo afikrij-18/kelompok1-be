@@ -4,7 +4,7 @@ Dokumen ini merangkum rencana-rencana fitur masa depan atau tambahan yang akan d
 
 ---
 
-## 1. Fitur Garansi Servis (`warranty-plan.md`)
+## 1. Fitur Garansi Servis (`warranty-plan.md`) — **SELESAI (Completed)**
 
 ### A. Latar Belakang
 Menambahkan fitur garansi untuk setiap layanan servis yang diberikan kepada pelanggan guna meningkatkan kualitas layanan dan menyediakan pelacakan klaim.

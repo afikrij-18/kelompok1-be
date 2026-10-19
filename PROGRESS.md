@@ -1,92 +1,55 @@
-# Progres Project Backend (kelompok1-be)
+# Progres Project Backend (`kelompok1-be`)
 
-Dokumen ini berisi rincian teknis dari progres pengembangan backend pada sistem informasi manajemen servis (kelompok1-be). Sistem ini dirancang untuk menangani operasional layanan servis (terutama servis AC/elektronik) dengan fitur manajemen data, karyawan, teknisi, pemesanan, penugasan teknisi, pembayaran, dan laporan keuangan.
+Dokumen ini berisi rincian teknis dari progres pengembangan backend pada sistem informasi manajemen servis (`kelompok1-be`). Sistem ini dirancang untuk menangani operasional layanan servis (terutama servis AC/elektronik) dengan fitur manajemen data, karyawan, teknisi, pemesanan, penugasan teknisi, pembayaran, pengeluaran, garansi, dan laporan keuangan.
 
 ## 1. Tech Stack (Teknologi yang Digunakan Saat Ini)
-- **Runtime Environment:** Node.js
+- **Runtime Environment:** Node.js (ESM / `type: "module"`)
 - **Framework:** Express.js
-- **Bahasa Pemrograman:** JavaScript (ES Modules / `type: "module"`), ESlint
-- **Database:** MySQL
-- **ORM (Object Relational Mapping):** Sequelize
-- **Autentikasi & Keamanan:** JSON Web Token (JWT) & bcrypt
+- **Database:** SQLite (`database/database.sqlite`, ter-ignore oleh `.gitignore`)
+- **ORM:** Sequelize
+- **Autentikasi & Keamanan:** JSON Web Token (JWT) & bcrypt (cost 12)
 
 ## 2. Arsitektur & Struktur Direktori
-Sistem ini mengadopsi arsitektur **MVC (Model-View-Controller)** pada lapisan backend (tanpa View). Struktur direktorinya adalah sebagai berikut:
+- `config/` : Pengaturan koneksi (`database.js` SQLite) dan konfigurasi auth (`auth.js`).
+- `models/` : Representasi 14 tabel Sequelize (`User`, `Technician`, `Product`, `Category`, `Service`, `Customer`, `CustomerAddress`, `BookingService`, `BookingUnit`, `Transaction`, `Expense`, `ExpenseCategory`, `Bank`, `WarrantyClaim`) dan relasinya di `index.js`.
+- `controllers/` : Business logic utama untuk tiap entitas.
+- `routes/` : 13 definisi endpoint API.
+- `middlewares/` : `authMiddleware` (validasi JWT) dan `roleMiddleware` (pembatasan hak akses `admin`, `owner`).
+- `seeds/` : Seeder data master, user, teknisi, bank, customer, booking, transaksi, expense-category, expense, dan warranties.
+- `database/` : File dump SQL lama (`kelompok1_db.sql`, arsip MySQL) dan SQLite live (`database.sqlite`).
 
-- `config/` : Berisi pengaturan dan konfigurasi sistem (`database.js` untuk koneksi ke MySQL).
-- `models/` : Berisi representasi tabel database ke dalam bentuk objek (Sequelize Models) beserta definisi relasinya (`User.js`, `Technician.js`, `Product.js`, `Category.js`, `Service.js`, `Customer.js`, `CustomerAddress.js`, `BookingService.js`, `BookingUnit.js`, `Transaction.js`, `Expense.js`, `ExpenseCategory.js`, `index.js`).
-- `controllers/` : Berisi *business logic* utama (`authController.js`, `UserController.js`, `TechnicianController.js`, `ProductController.js`, `CategoryController.js`, `ServiceController.js`, `bookingController.js`, `TransactionController.js`, `ExpenseController.js`, `ExpenseCategoryController.js`).
-- `routes/` : Berisi definisi *endpoint* API (`authRoutes.js`, `UserRoutes.js`, `technicianRoutes.js`, `ProductRoutes.js`, `categoryRoutes.js`, `serviceRoutes.js`, `bookingRoutes.js`, `transactionRoutes.js`, `expenseRoutes.js`, `expenseCategoryRoutes.js`).
-- `middlewares/` : Berisi fungsi perantara seperti `authMiddleware` (validasi JWT) dan `roleMiddleware` (pembatasan hak akses `admin`, `owner`).
-- `seeds/` : Berisi skrip seeding data awal master data, user, booking, transaksi, dan pengeluaran.
-- `database/` : Berisi file *dump* SQL (`kelompok1_db.sql`).
-
-## 3. Detail Skema Database & Relasi
-Sistem ini menggunakan relasi database yang terstruktur dengan pemisahan entitas administratif, operasional, dan finansial:
-
-1. **`users`** (Tabel Akun Sistem / Staf Administratif)
-   - Kolom: `id`, `name`, `email`, `password`, `phone`, `status` (ENUM: active, inactive), `role` (ENUM: admin, owner), `createdAt`, `updatedAt`
-   - Catatan: Khusus untuk hak akses *login*. Role `technician` sudah dihapus dari tabel ini.
-2. **`technicians`** (Tabel Data Teknisi Operasional)
-   - Kolom: `id`, `name`, `phone`, `status` (active/inactive), `createdAt`, `updatedAt`
-   - Catatan: Terpisah dari `users`. Tanpa kolom `specialization`. Dikelola penuh (CRUD) oleh Admin/Owner.
-3. **`products`** (Tabel Suku Cadang / Barang)
-   - Kolom: `id`, `name`, `description`, `price`, `stock`, `createdAt`, `updatedAt`
-4. **`categories`** (Tabel Kategori Layanan - Flat)
-   - Kolom: `id`, `name`, `createdAt`, `updatedAt`
-   - Catatan: Kolom `parent_id` dihapus karena tidak terpakai. Tidak ada relasi *self-referencing*. Response API berupa flat list, bukan tree.
-5. **`services`** (Tabel Layanan/Jasa Servis)
-   - Kolom: `id`, `name`, `description`, `price`, `category_id`, `createdAt`, `updatedAt`
-   - Relasi: *Belongs-To* ke tabel `categories`.
-6. **`customers`** (Tabel Pelanggan)
-   - Kolom: `id`, `name`, `phone`, `createdAt`, `updatedAt`
-7. **`customer_addresses`** (Tabel Alamat Pelanggan)
-   - Kolom: `id`, `customer_id`, `label`, `address`, `notes_location`, `createdAt`, `updatedAt`
-   - Relasi: *Belongs-To* ke tabel `customers` (1 Customer memiliki banyak alamat).
-8. **`booking_services`** (Tabel Induk Pemesanan)
-   - Kolom: `id`, `reg_no` (unik, contoh `BK-20261008-3176`), `status` (pending, confirmed, completed, cancelled), `customer_id`, `address_id`, `technician_id` (FK ke `technicians`), `created_by` (FK ke `users`), `booking_date`, `booking_time`, `total_price`, `notes`, `createdAt`, `updatedAt`
-   - Relasi: Terhubung ke `customers`, `customer_addresses`, `technicians`, dan `users`.
-   - Catatan: `total_price` wajib dihitung otomatis di backend (`SUM` harga service per unit), bukan input manual dari client.
-9. **`booking_units`** (Tabel Detail Unit yang Diservis)
-   - Kolom: `id`, `booking_id`, `service_id`, `brand_ac`, `type_ac`, `pk`, `lokasi`, `keluhan`, `price`, `createdAt`, `updatedAt`
-   - Relasi: *Belongs-To* ke `booking_services` (1 pesanan = banyak unit) dan merujuk ke `services`.
-10. **`transactions`** (Tabel Pembayaran / Dasar Laporan Keuangan)
-    - Kolom: `id`, `booking_id` (FK ke `booking_services`), `invoice_no` (unik, contoh `INV-202610-001`), `payment_method` (ENUM: cash, transfer_bank, qris), `amount_paid`, `payment_status` (ENUM: pending, paid, failed), `payment_date`, `notes`, `created_by` (FK ke `users`), `createdAt`, `updatedAt`
-    - Catatan: Tidak memakai field `transaction_no` dan `proof_image`. Nomor referensi memakai `invoice_no`, catatan tambahan memakai `notes`.
-    - Relasi: *Belongs-To* ke `booking_services` dan ke `users` (pencatat pembayaran).
-11. **`expense_categories`** (Tabel Kategori Pengeluaran / Uang Keluar)
-    - Kolom: `id`, `nama` (unik), `deskripsi`, `status` (ENUM: active, inactive), `createdAt`, `updatedAt`
-    - Catatan: Kategori terhubung ke pencatatan `expenses`. Jika kategori sudah memiliki riwayat transaksi pengeluaran, kategori tidak dapat dihapus (`RESTRICT`) demi menjaga integritas data riwayat.
-12. **`expenses`** (Tabel Pencatatan Uang Keluar / Pengeluaran Operasional)
-    - Kolom: `id`, `tanggal` (DATEONLY, `YYYY-MM-DD`), `category_id` (FK ke `expense_categories`), `keterangan` (TEXT), `metode` (ENUM: cash, transfer_bank, qris), `jumlah` (BIGINT UNSIGNED), `created_by` (FK ke `users`), `createdAt`, `updatedAt`
-    - Relasi: *Belongs-To* ke `expense_categories` dan *Belongs-To* ke `users` (pencatat pengeluaran).
+## 3. Detail Skema Database & Relasi (14 Tabel)
+1. **`users`** : Akun staf/admin/owner (`id`, `name`, `email`, `password`, `phone`, `status`, `role`). Role `technician` ditiadakan.
+2. **`technicians`** : Data teknisi operasional terpisah dari users (`id`, `name`, `phone`, `status`).
+3. **`products`** : Suku cadang / barang (`id`, `name`, `description`, `price`, `stock`).
+4. **`categories`** : Kategori layanan flat (`id`, `name`).
+5. **`services`** : Layanan/jasa servis (`id`, `name`, `description`, `price`, `category_id`, `warranty_days`).
+6. **`customers`** : Data pelanggan (`id`, `name`, `phone` - unique).
+7. **`customer_addresses`** : Alamat pelanggan (`id`, `customer_id`, `label`, `address`, `notes_location`). 1 customer banyak alamat.
+8. **`booking_services`** : Induk pesanan (`id`, `reg_no`, `status` [pending, confirmed, completed, cancelled], `customer_id`, `address_id`, `technician_id`, `created_by`, `booking_date`, `booking_time`, `total_price`, `notes`).
+9. **`booking_units`** : Detail unit AC yang diservis (`id`, `booking_id`, `service_id`, `brand_ac`, `type_ac`, `pk`, `lokasi`, `keluhan`, `price`, `warranty_expiry_date`).
+10. **`transactions`** : Pembayaran / kasir (`id`, `booking_id`, `invoice_no`, `payment_method` [cash, transfer_bank, qris], `bank_id`, `amount_paid`, `payment_status` [pending, paid, failed], `payment_date`, `notes`, `created_by`).
+11. **`expense_categories`** : Kategori uang keluar (`id`, `nama`, `deskripsi`, `status`, `RESTRICT` delete jika ada relasi).
+12. **`expenses`** : Pencatatan uang keluar (`id`, `tanggal`, `category_id`, `keterangan`, `metode`, `bank`, `bank_id`, `jumlah`, `created_by`).
+13. **`banks`** : Master bank / rekening pembayaran (`id`, `nama`, `no_rekening`, `atas_nama`, `status`).
+14. **`warranty_claims`** : Pengajuan klaim garansi servis (`id`, `booking_unit_id`, `claim_date`, `keluhan`, `status` [pending, approved, rejected, in_progress, completed], `created_by`, `handled_by`, `resolution_notes`).
 
 ## 4. Alur Proses (Workflow) Terkini
-Alur kerja end-to-end: `Master Data -> Booking (Auto Confirmed + Teknisi + Payment Langsung) -> Transaction (Pemasukan) & Expense (Pengeluaran) -> Laporan Keuangan`.
 
-**A. Alur Admin & Owner**
-- **Autentikasi:** *Login* (POST `/api/auth/login`) memakai tabel `users` untuk mendapatkan JWT. Hanya `admin` dan `owner`.
-- **Kelola Data Master (CRUD, protected `authMiddleware + roleMiddleware`):**
-  - Master Staf (`/api/users`).
-  - Master Teknisi (`/api/technicians`).
-  - Master Suku Cadang (`/api/products`).
-  - Master Layanan (`/api/categories` flat dan `/api/services`).
-  - Master Kategori Pengeluaran (`/api/expense-categories`).
-- **Proses Pemesanan / Booking (`POST /api/bookings`):**
-  - Input dari Admin/Owner otomatis berstatus `confirmed` (bukan `pending`).
-  - Pencatatan audit trail: `created_by` diisi otomatis dari ID Admin/Owner yang sedang login.
-  - Penugasan Teknisi (`technician_id`): Sistem memvalidasi ketersediaan teknisi dan menolak jika terjadi bentrok jadwal pada tanggal & waktu yang sama (toleransi durasi pengerjaan).
-  - Pembayaran Langsung (`payment` object opsional): Admin/Owner dapat langsung memilih `payment_method`, `amount_paid`, dan `payment_status` saat membuat booking, sehingga entitas `Transaction` langsung tercatat secara otomatis.
-- **Proses Pembayaran / Transaksi Terpisah (`/api/transactions`):**
-  - Pembuatan transaksi per booking dengan `generateInvoiceNo()`.
-  - Validasi nominal dan pencatatan kasir.
-- **Pengelolaan Uang Keluar / Expense (`/api/expenses`):**
-  - Pencatatan biaya operasional, pembelian alat, atau pengeluaran harian usaha.
-  - Validasi tanggal (`YYYY-MM-DD`), metode (`cash`, `transfer_bank`, `qris`), dan nominal pengeluaran.
-  - Dukungan filter lengkap (berdasarkan `category_id`, `metode`, rentang tanggal `from` & `to`, pencarian kata kunci `search`, serta pagination).
-  - Otomatis menghitung total nilai pengeluaran kumulatif (`total_pengeluaran`).
-- **Laporan Keuangan (`GET /api/transactions/report?from=&to=` & `/api/expenses`):**
-  - Rekap omzet harian/bulanan, rekap per `payment_method`, piutang, dan pencatatan arus uang keluar.
+### A. Alur Admin & Owner (Protected JWT + Role)
+- **Auth:** `POST /api/auth/login` (tabel `users`, role `admin` / `owner`).
+- **Master Data CRUD:** Users, Technicians, Products, Categories, Services, Expense Categories, Banks.
+- **Booking & Pembayaran Langsung (`POST /api/bookings`):**
+  - Status otomatis `confirmed` (bukan pending).
+  - `created_by` terisi otomatis dari user login.
+  - Validasi bentrok jadwal teknisi (toleransi 2 jam pada tanggal yang sama).
+  - Inline `payment` object langsung mencatat entitas `Transaction`.
+- **Transaksi & Keuangan (`/api/transactions`, `/api/expenses`):**
+  - Rekap omzet, filter metode pembayaran, dan pencatatan kas keluar operasional.
+  - **Fitur Garansi Otomatis:** Saat booking diubah ke status `completed` dan akumulasi pembayaran lunas (`>= total_price`), sistem otomatis menerbitkan `warranty_expiry_date` per unit berdasarkan `services.warranty_days`.
+- **Klaim Garansi (`/api/warranties/claims`):** Cek keaktifan garansi (`/api/warranties/check`), pengajuan klaim, dan update status penanganan.
 
-**B. Alur Akses Publik / Tamu (Guest)**
-- Semua jalur API saat ini terproteksi JWT Admin/Owner. Guest belum memiliki alur *self-service booking*.
+### B. Alur Publik / Tamu (Guest - Tanpa Auth)
+- **`GET /api/public/services`** : Katalog layanan untuk halaman depan.
+- **`POST /api/public/bookings`** : Pelanggan pesan servis tanpa login (status otomatis `pending`, `created_by: null`, tanpa teknisi awal).
+- **`GET /api/public/bookings/status?reg_no=`** : Pelanggan melacak status pesanan menggunakan nomor registrasi (`BK-YYYYMMDD-XXXX`).

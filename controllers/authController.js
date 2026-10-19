@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/auth.js";
 
 // ========================================
 // LOGIN Admin dan Owner
@@ -62,9 +63,9 @@ const login = async (req, res) => {
         email: user.email,
         role: user.role,
       },
-      "kelompok1_secret_key",
+      JWT_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: JWT_EXPIRES_IN,
       },
     );
 
