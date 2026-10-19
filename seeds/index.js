@@ -9,6 +9,9 @@ const seeders = [
   "seedCustomers.js",
   "seedBookings.js",
   "seedTransactions.js",
+  "seedExpenseCategories.js",
+  "seedExpenses.js",
+  "seedWarranties.js"
 ];
 
 console.log("=== RUNNING ALL SEEDERS IN SEQUENCE ===\n");

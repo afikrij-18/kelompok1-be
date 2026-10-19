@@ -54,7 +54,7 @@ const Expense = db.define(
       allowNull: true,
     },
     jumlah: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       validate: {
         min: {

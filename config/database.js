@@ -1,8 +1,14 @@
 import { Sequelize } from "sequelize";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const db = new Sequelize("kelompok1_db", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const db = new Sequelize({
+  dialect: "sqlite",
+  storage: path.join(__dirname, "../database/database.sqlite"),
+  logging: false,
 });
 
 export default db;
