@@ -22,18 +22,18 @@ const run = async () => {
       { name: "Owner Utama", email: "owner@example.com", password, phone: "081234567891", status: "active", role: "owner" },
       { name: "Admin UMKM", email: "admin.umkm@gmail.com", password, phone: "081234567892", status: "active", role: "admin" },
       { name: "Admin Lama", email: "admin@gmail.com", password, phone: "081234567893", status: "active", role: "admin" },
+      { name: "Admin Dummy 1", email: "admin1@example.com", password, phone: "081200000001", status: "active", role: "admin" },
+      { name: "Admin Dummy 2", email: "admin2@example.com", password, phone: "081200000002", status: "active", role: "admin" },
+      { name: "Admin Dummy 3", email: "admin3@example.com", password, phone: "081200000003", status: "active", role: "admin" },
+      { name: "Admin Dummy 4", email: "admin4@example.com", password, phone: "081200000004", status: "active", role: "admin" },
+      { name: "Admin Dummy 5", email: "admin5@example.com", password, phone: "081200000005", status: "active", role: "admin" },
+      { name: "Admin Dummy 6", email: "admin6@example.com", password, phone: "081200000006", status: "active", role: "admin" },
+      { name: "Admin Dummy 7", email: "admin7@example.com", password, phone: "081200000007", status: "active", role: "admin" },
+      { name: "Admin Dummy 8", email: "admin8@example.com", password, phone: "081200000008", status: "active", role: "admin" },
+      { name: "Admin Dummy 9", email: "admin9@example.com", password, phone: "081200000009", status: "active", role: "admin" },
+      { name: "Admin Dummy 10", email: "admin10@example.com", password, phone: "081200000010", status: "active", role: "admin" },
+      { name: "Admin Dummy 11", email: "admin11@example.com", password, phone: "081200000011", status: "active", role: "admin" },
     ];
-
-    for (let i = 1; i <= 11; i++) {
-      users.push({
-        name: `Admin Dummy ${i}`,
-        email: `admin${i}@example.com`,
-        password,
-        phone: `0812000000${i < 10 ? '0' + i : i}`,
-        status: "active",
-        role: "admin",
-      });
-    }
 
     await User.bulkCreate(users);
 

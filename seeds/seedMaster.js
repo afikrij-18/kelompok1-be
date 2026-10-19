@@ -8,41 +8,50 @@ const runMasterSeeder = async () => {
     const t = await db.transaction();
 
     try {
-      // 1. Seed Categories (Flat)
+      // 1. Seed Categories (3 real categories from database)
       const categoriesData = [
-        { id: 1, name: "Service AC" },
-        { id: 2, name: "Perbaikan AC" },
-        { id: 3, name: "Bongkar Pasang AC" },
+        { name: "Service AC" },
+        { name: "Installasi" },
+        { name: "Perbaikan" },
       ];
 
       for (const cat of categoriesData) {
         await Category.findOrCreate({
-          where: { id: cat.id },
+          where: { name: cat.name },
           defaults: cat,
           transaction: t,
         });
       }
 
-      // 2. Seed Services
+      // 2. Seed Services (7 real services from database)
       const servicesData = [
-        { id: 1, name: "Service AC Biasa (updated)", description: "Pembersihan standar diperbarui", price: 96000, category_id: 1, warranty_days: 7 },
-        { id: 2, name: "Service AC Extra", description: "Pembersihan menyeluruh dengan cuci steam", price: 180000, category_id: 1, warranty_days: 14 },
-        { id: 3, name: "Perbaikan Kapasitor Outdoor", description: "Memperbaiki kapasitor outdoor untuk kompressor", price: 275000, category_id: 2, warranty_days: 30 },
-        { id: 4, name: "Perbaikan Fan Indoor", description: "Memperbaiki Fan Indoor", price: 275000, category_id: 2, warranty_days: 30 },
-        { id: 5, name: "Bongkar AC Split", description: "Pekerjaan hanya membongkar AC Split", price: 150000, category_id: 3, warranty_days: 0 },
-        { id: 6, name: "Pasang AC Split (Baru/Second)", description: "Pekerjaan hanya memasang AC Split", price: 250000, category_id: 3, warranty_days: 14 },
+        { name: "Service AC Biasa", description: "Service AC dengan pembersihan standar", price: 90000, category_id: 1, warranty_days: 7 },
+        { name: "Service AC Extra", description: "Service AC dengan pembersihan menyeluruh", price: 150000, category_id: 1, warranty_days: 7 },
+        { name: "Instalasi AC Baru Split 1 PK", description: "Pemasangan AC baru dengan garansi instalasi", price: 250000, category_id: 2, warranty_days: 30 },
+        { name: "Motor Swing Indoor", description: "Perbaikan motor swing indoor AC", price: 150000, category_id: 3, warranty_days: 30 },
+        { name: "Kapasitor Outdoor", description: "Penggantian kapasitor outdoor", price: 275000, category_id: 3, warranty_days: 30 },
+        { name: "Bongkar Pasang AC", description: "Bongkar dan pasang ulang AC ke lokasi baru", price: 250000, category_id: 2, warranty_days: 30 },
+        { name: "Fan Indoor", description: "Perbaikan atau penggantian fan indoor", price: 200000, category_id: 3, warranty_days: 30 },
       ];
 
       for (const srv of servicesData) {
+        const category = await Category.findOne({
+          where: { name: categoriesData[srv.category_id - 1].name },
+          transaction: t,
+        });
+        
         await Service.findOrCreate({
-          where: { id: srv.id },
-          defaults: srv,
+          where: { name: srv.name },
+          defaults: {
+            ...srv,
+            category_id: category.id,
+          },
           transaction: t,
         });
       }
 
       await t.commit();
-      console.log("[master] Master data seeded successfully!");
+      console.log("[master] Master data seeded successfully! (3 categories + 7 services)");
       process.exit(0);
     } catch (error) {
       await t.rollback();

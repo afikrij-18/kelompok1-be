@@ -40,21 +40,16 @@ const seedExpenseCategories = async () => {
     for (const item of categories) {
       const [, wasCreated] = await ExpenseCategory.findOrCreate({
         where: { nama: item.nama },
-        defaults: {
-          ...item,
-          status: "active",
-        },
+        defaults: item,
       });
-
       if (wasCreated) created++;
     }
 
-    console.log(`Seed kategori selesai. Kategori baru: ${created}`);
-  } catch (error) {
-    console.error("Seed kategori gagal:", error);
-    process.exitCode = 1;
-  } finally {
-    await db.close();
+    console.log(`[expense_categories] seeded ${created} new rows`);
+    process.exit(0);
+  } catch (err) {
+    console.error("[expense_categories] failed:", err.message);
+    process.exit(1);
   }
 };
 

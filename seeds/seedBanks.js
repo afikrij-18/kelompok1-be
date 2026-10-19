@@ -13,10 +13,10 @@ const seedBanks = async () => {
     }
 
     const banks = [
-      { nama: "BCA", no_rekening: "1234567890", atas_nama: "CV Sejuk Pro Mandiri", status: "active" },
-      { nama: "Mandiri", no_rekening: "0987654321", atas_nama: "CV Sejuk Pro Mandiri", status: "active" },
-      { nama: "BRI", no_rekening: "1122334455", atas_nama: "CV Sejuk Pro Mandiri", status: "active" },
-      { nama: "QRIS", no_rekening: "QRIS-MAIN", atas_nama: "CV Sejuk Pro Mandiri", status: "active" },
+      { nama: "BCA", no_rekening: "1234567890", atas_nama: "CV Service AC Sumbar", status: "active" },
+      { nama: "Mandiri", no_rekening: "0987654321", atas_nama: "CV Service AC Sumbar", status: "active" },
+      { nama: "BRI", no_rekening: "1122334455", atas_nama: "CV Service AC Sumbar", status: "active" },
+      { nama: "QRIS", no_rekening: "QRIS-MAIN", atas_nama: "CV Service AC Sumbar", status: "active" },
     ];
 
     await Bank.bulkCreate(banks);

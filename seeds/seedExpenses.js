@@ -16,14 +16,14 @@ const seedExpenses = async () => {
         category: "Operasional",
         keterangan: "Pembelian alat kebersihan",
         metode: "cash",
-        jumlah: "75000",
+        jumlah: 75000,
       },
       {
         tanggal: "2026-10-03",
         category: "Transportasi",
         keterangan: "Bensin kendaraan operasional",
         metode: "cash",
-        jumlah: "100000",
+        jumlah: 100000,
       },
       {
         tanggal: "2026-10-05",
@@ -31,14 +31,14 @@ const seedExpenses = async () => {
         keterangan: "Pembayaran tagihan listrik",
         metode: "transfer_bank",
         bank_name: "BCA",
-        jumlah: "350000",
+        jumlah: 350000,
       },
       {
         tanggal: "2026-10-08",
         category: "Peralatan",
         keterangan: "Pembelian peralatan kerja",
         metode: "qris",
-        jumlah: "150000",
+        jumlah: 150000,
       },
     ];
 
@@ -46,19 +46,20 @@ const seedExpenses = async () => {
 
     for (const item of sampleExpenses) {
       const category = await ExpenseCategory.findOne({
-        where: {
-          nama: item.category,
-          status: "active",
-        },
+        where: { nama: item.category },
       });
 
       if (!category) {
-        throw new Error(
-          `Kategori aktif "${item.category}" tidak ditemukan. Jalankan seed kategori terlebih dahulu.`,
-        );
+        console.warn(`[expenses] kategori ${item.category} tidak ditemukan`);
+        continue;
       }
 
-      const bankRef = item.bank_name ? await Bank.findOne({ where: { nama: item.bank_name } }) : null;
+      let bank = null;
+      if (item.bank_name) {
+        bank = await Bank.findOne({
+          where: { nama: item.bank_name },
+        });
+      }
 
       const [, wasCreated] = await Expense.findOrCreate({
         where: {
@@ -67,12 +68,11 @@ const seedExpenses = async () => {
           keterangan: item.keterangan,
         },
         defaults: {
-          tanggal: item.tanggal,
           category_id: category.id,
           keterangan: item.keterangan,
+          tanggal: item.tanggal,
           metode: item.metode,
-          bank: bankRef ? bankRef.nama : null,
-          bank_id: bankRef ? bankRef.id : null,
+          bank_id: bank ? bank.id : null,
           jumlah: item.jumlah,
           created_by: user.id,
         },
@@ -81,12 +81,11 @@ const seedExpenses = async () => {
       if (wasCreated) created++;
     }
 
-    console.log(`Seed pengeluaran selesai. Data baru: ${created}`);
-  } catch (error) {
-    console.error("Seed pengeluaran gagal:", error);
-    process.exitCode = 1;
-  } finally {
-    await db.close();
+    console.log(`[expenses] seeded ${created} rows`);
+    process.exit(0);
+  } catch (err) {
+    console.error("[expenses] failed:", err.message);
+    process.exit(1);
   }
 };
 

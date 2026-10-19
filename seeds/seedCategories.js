@@ -14,25 +14,13 @@ const run = async () => {
 
     const categories = [
       { name: "Service AC" },
-      { name: "Perbaikan AC" },
-      { name: "Bongkar Pasang AC" },
-      { name: "Cuci AC" },
-      { name: "Pengecekan Freon" },
-      { name: "Instalasi Pipa" },
-      { name: "Service Kulkas" },
-      { name: "Service Mesin Cuci" },
-      { name: "Perbaikan Modul" },
-      { name: "Pengelasan Pipa" },
-      { name: "Service Pompa Air" },
-      { name: "Isi Freon" },
-      { name: "Pembersihan Evaporator" },
-      { name: "Perbaikan Kelistrikan" },
-      { name: "General Checkup" },
+      { name: "Installasi" },
+      { name: "Perbaikan" },
     ];
 
     await Category.bulkCreate(categories);
 
-    console.log("[categories] seeded 15 rows");
+    console.log("[categories] seeded 3 rows");
     process.exit(0);
   } catch (err) {
     console.error("[categories] failed:", err.message);

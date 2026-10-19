@@ -12,8 +12,8 @@ const run = async () => {
       process.exit(0);
     }
 
-    // Ambil booking pertama yang confirmed
-    const booking = await BookingService.findOne({ where: { status: "confirmed" } }) || await BookingService.findOne();
+    // Ambil booking yang completed (Heri's booking)
+    const booking = await BookingService.findOne({ where: { status: "completed" } });
     const admin = await User.findOne({ where: { role: "admin" } });
     const bank = await Bank.findOne();
 
@@ -24,17 +24,16 @@ const run = async () => {
 
     await Transaction.create({
       booking_id: booking.id,
-      invoice_no: `INV-${new Date().toISOString().slice(0, 7).replace("-", "")}-1001`,
+      invoice_no: "INV-202610-3186",
       payment_method: "cash",
       bank_id: bank ? bank.id : null,
-      amount_paid: booking.total_price,
+      amount_paid: 250000,
       payment_status: "paid",
-      payment_date: new Date(),
-      notes: "Pembayaran lunas tunai via seeder",
-      created_by: admin ? admin.id : null,
+      payment_date: "2026-10-19 21:27:27.255",
+      created_by: admin ? admin.id : 108,
     });
 
-    console.log(`[transactions] seeded transaction for booking ${booking.id}`);
+    console.log("[transactions] seeded 1 transaction");
     process.exit(0);
   } catch (err) {
     console.error("[transactions] failed:", err.message);

@@ -1,18 +1,17 @@
 import { execSync } from "child_process";
 
 const seeders = [
-  "seedUsers.js",
-  "seedTechnicians.js",
-  "seedCategories.js",
-  "seedServices.js",
-  "seedProducts.js",
-  "seedBanks.js",
-  "seedCustomers.js",
-  "seedBookings.js",
-  "seedTransactions.js",
-  "seedExpenseCategories.js",
-  "seedExpenses.js",
-  "seedWarranties.js"
+  "seedUsers.js",           // Users first (for admin/created_by references)
+  "seedMaster.js",          // Categories & Services (master data)
+  "seedBanks.js",           // Banks for transactions
+  "seedExpenseCategories.js", // Expense categories
+  "seedTechnicians.js",     // Technicians
+  "seedProducts.js",        // Products
+  "seedCustomers.js",       // Customers & Addresses
+  "seedExpenses.js",        // Expenses (depends on users, banks, categories)
+  "seedBookings.js",        // Bookings (depends on services, customers, technicians, addresses)
+  "seedTransactions.js",    // Transactions (depends on bookings, users, banks)
+  "seedWarranties.js",      // Warranties (depends on bookings)
 ];
 
 console.log("=== RUNNING ALL SEEDERS IN SEQUENCE ===\n");
